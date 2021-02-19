@@ -24,15 +24,22 @@ function generateHeader($title)
         </html>
     <?php
     createNavigationMenu($title);
+    createHeadContainer();
+    echo "Ola";
+    
 
 }
 
 function generateFooter()
 {
-    ?>    
-        <br><br>&copy; Matheus Emidio (1931358) <?php echo date('Y'); ?>     
-        </body>
-        </html>
+    createFootContainer();
+    ?>
+        
+        <div class="footer">    
+            <br><br>&copy; Matheus Emidio (1931358) <?php echo date('Y'); ?>     
+            </body>
+            </html>
+        </div>
     <?php
 }
 
@@ -56,6 +63,20 @@ function createNavigationMenu()
 function createLogo()
 {
     ?>
-        <img class="logo" src="<?php echo FILE_LOGO; ?>" alt="logo"/>
+        <img class="logo margin-zero" src="<?php echo FILE_LOGO; ?>" alt="logo"/>
    <?php
+}
+
+function createHeadContainer()
+{
+    ?>
+        <div class="container">          
+    <?php
+}
+
+function createFootContainer()
+{
+    ?>
+        </div>
+    <?php
 }

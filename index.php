@@ -12,7 +12,7 @@ generateHeader("Home");
 
     //Calling and writing space
     ?>
-        <p>Welcome to my Website!</p>
+        <p class="margin-zero">Welcome to my Website!</p>
     <?php
 
 
