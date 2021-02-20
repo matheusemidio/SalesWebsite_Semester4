@@ -25,7 +25,7 @@ function generateHeader($title)
     <?php
     createNavigationMenu($title);
     createHeadContainer();
-    echo "Ola";
+    
     
 
 }
@@ -78,5 +78,37 @@ function createFootContainer()
 {
     ?>
         </div>
+    <?php
+}
+
+function createForm()
+{
+    ?>
+        <form action="buying.php" method="POST" class="form">
+                <p>
+                    <label for="productcode"> Product Code: </label>
+                    <input type="text" name="productcode" placeholder="P45MOUSE" required/>
+                    <br>
+                    <label> First Name: </label>
+                    <input type="text" name="firstname" placeholder="Matheus" required/>
+                    <br>
+                    <label for="lastname">Last Name: </label>
+                    <input type="text" name="lastname" placeholder="Cadena" required/>
+                    <br>
+                    <label for="city">City: </label>
+                    <input type="text" name="city" placeholder="Montréal" required/>
+                    <br>
+                    <label for="comment">Comment: </label>
+                    <input type="text" name="comment" />
+                    <br>
+                    <label for="price">Price: </label>
+                    <input type="text" name="price" required/>
+                    <br>
+                    <label for="quantity">Quantity: </label>
+                    <input type="text" name="quantity" required/>
+                    <br>
+                </p>
+                <input type="submit" value="Submit" name="save" class="button"/>            
+        </form>
     <?php
 }

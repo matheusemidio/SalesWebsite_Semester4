@@ -47,3 +47,25 @@ a:link, a:visited{
 {
     margin: 0;
 }
+.form label
+{
+    display: inline-block;
+    margin-left: 10px;
+    min-width: 100px;
+    margin-bottom: 5px;
+}
+.button
+{
+    width: 100px;
+    height: 30px;
+    margin-left: 115px;
+    background-color: #2aa348;
+    border-radius: 8px;
+    border: 2px solid #2b8f43 ;
+}
+.button:hover
+{
+    background-color: #1c8c37;
+    border: 2px solid #1d7a34 ;
+
+}
