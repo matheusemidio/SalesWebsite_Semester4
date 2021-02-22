@@ -112,3 +112,26 @@ function createForm()
         </form>
     <?php
 }
+
+    function showAdvertisingPicture()
+    {
+        $ads = array(FILE_AD1_BIGGER, FILE_AD2, FILE_AD3, FILE_AD4, FILE_AD5 );
+        shuffle($ads);
+        ?>
+            <div class="img-container">
+        <?php
+                if($ads[0] == FILE_AD1_BIGGER)
+                {
+                    ?>
+                        <a href="https://www.google.com/"><img class="advertising-picture-bigger" src="<?php echo $ads[0]; ?>" alt="advertising"/></a>            
+                    <?php
+                }
+                else{
+                    ?>
+                        <a href="https://www.google.com/"><img class="advertising-picture" src="<?php echo $ads[0]; ?>" alt="advertising"/></a>
+                    <?php
+                }
+        ?>
+            </div>
+        <?php
+    }

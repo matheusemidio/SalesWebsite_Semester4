@@ -11,9 +11,11 @@ require_once FILE_PHP_FUNCTIONS;
 generateHeader("Home");
 
     //Calling and writing space
-    ?>
-        <p class="margin-zero">Welcome to my Website!</p>
-    <?php
+        ?>
+            <p class="margin-zero">Welcome to my Website!</p>
+        <?php
+        showAdvertisingPicture();
+    //End of writing space
 
 
 //End of the HTML

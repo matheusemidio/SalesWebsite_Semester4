@@ -1,25 +1,32 @@
-body{
+body
+{
     background-color: lightblue;
     margin: 0;
 }
-ul{
+ul
+{
     list-style-type: none;
     display: inline-block;
     top: 50%;   
 }
-li{
+li
+{
     float: left;
     margin: 10px;
 }
-a:link, a:visited{
+a:link, a:visited
+{
     text-decoration: none;
 }
-.logo{
+.logo
+{
     
     display: inline-block;
-    width: 70px;
-    height: 70px;
+    width: 120px;
+    height: 50px;
     margin-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 .navbar
 {
@@ -40,8 +47,7 @@ a:link, a:visited{
     max-width: 950px;
     height: auto;
     margin: 10px auto;
-    background-color: lightgray;
-        
+    background-color: lightgray;       
 }
 .margin-zero
 {
@@ -68,4 +74,19 @@ a:link, a:visited{
     background-color: #1c8c37;
     border: 2px solid #1d7a34 ;
 
+}
+.advertising-picture
+{
+    width: 100px;
+    height: 100px;
+}
+.advertising-picture-bigger 
+{
+    width: 200px;
+    height: 200px;
+    border: 5px solid red;
+}
+.img-container
+{
+    text-align: center;
 }
