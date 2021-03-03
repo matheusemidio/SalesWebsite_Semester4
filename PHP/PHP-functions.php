@@ -1,4 +1,12 @@
 <?php
+#Revision History
+#Matheus Emidio (1931358) 2021-02-18 Worked on the functions to generate html for header, footer, navigation bar and logo
+#Matheus Emidio (1931358) 2021-02-19 Worked on the container for the body content
+#Matheus Emidio (1931358) 2021-02-20 Worked on the beginning of the forms generator
+#Matheus Emidio (1931358) 2021-02-21 Worked on the function that will generate the advertising pictures 
+#Matheus Emidio (1931358) 2021-03-03 Added red asterix to the required fields, error messages and values to the form inputs 
+
+
 
 //Getting access to the variables definition file
 define("FILE_PHP_VARIABLES","PHP-variables.php");
@@ -83,30 +91,89 @@ function createFootContainer()
 
 function createForm()
 {
+    global $product_code;
+    global $firstname;
+    global $lastname;
+    global $city;
+    global $comment;
+    global $price;
+    global $quantity;
+    global $errorProductCode;
+    global $errorFirstName;
+    global $errorLastName;
+    global $errorCity;
+    global $errorComment;
+    global $errorPrice;
+    global $errorQuantity;
+    
+    
     ?>
         <form action="buying.php" method="POST" class="form">
                 <p>
-                    <label for="productcode"> Product Code: </label>
-                    <input type="text" name="productcode" placeholder="P45MOUSE" required/>
+                    
+                    <label class="required" for="productcode"> Product Code: </label>
+                    <input type="text" name="productcode" placeholder="P45MOUSE" value="<?php echo $product_code; ?>"/>
+                    <span class="errorMessage">
+                        <?php 
+                            echo $errorProductCode;
+                        ?>
+                    </span>                    
                     <br>
-                    <label> First Name: </label>
-                    <input type="text" name="firstname" placeholder="Matheus" required/>
+                    
+                    <label class="required" for="firstname"> Customer First Name: </label>
+                    <input type="text" name="firstname" placeholder="Matheus" value="<?php echo $firstname; ?>"/>
+                    <span class="errorMessage">
+                        <?php 
+                            echo $errorFirstName;
+                        ?>
+                    </span>                     
                     <br>
-                    <label for="lastname">Last Name: </label>
-                    <input type="text" name="lastname" placeholder="Cadena" required/>
+                    
+                    <label class="required" for="lastname">Customer Last Name: </label>
+                    <input type="text" name="lastname" placeholder="Cadena" value="<?php echo $lastname; ?>"/>
+                    <span class="errorMessage">
+                        <?php 
+                            echo $errorLastName;
+                        ?>
+                    </span>                     
                     <br>
-                    <label for="city">City: </label>
-                    <input type="text" name="city" placeholder="Montréal" required/>
+                    
+                    <label class="required" for="city">Customer City: </label>
+                    <input type="text" name="city" placeholder="Montréal" value="<?php echo $city; ?>"/>
+                    <span class="errorMessage">
+                        <?php 
+                            echo $errorCity;
+                        ?>
+                    </span>                     
                     <br>
+                    
                     <label for="comment">Comment: </label>
-                    <input type="text" name="comment" />
+                    <input type="text" name="comment" value="<?php echo $comment; ?>"/>
+                    <span class="errorMessage">
+                        <?php 
+                            echo $errorComment;
+                        ?>
+                    </span>                     
                     <br>
-                    <label for="price">Price: </label>
-                    <input type="text" name="price" required/>
+                    
+                    <label class="required" for="price">Price: </label>
+                    <input type="text" name="price" value=" <?php echo $price; ?>"/>
+                    <span class="errorMessage">
+                        <?php 
+                            echo $errorPrice;
+                        ?>
+                    </span>                     
                     <br>
-                    <label for="quantity">Quantity: </label>
-                    <input type="text" name="quantity" required/>
+                    
+                    <label class="required" for="quantity">Quantity: </label>
+                    <input type="text" name="quantity" value="<?php echo $quantity; ?>"/>
+                    <span class="errorMessage">
+                        <?php 
+                            echo $errorQuantity;
+                        ?>
+                    </span>                     
                     <br>
+                    
                 </p>
                 <input type="submit" value="Submit" name="save" class="button"/>            
         </form>

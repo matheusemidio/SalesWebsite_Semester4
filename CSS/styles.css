@@ -57,7 +57,7 @@ a:link, a:visited
 {
     display: inline-block;
     margin-left: 10px;
-    min-width: 100px;
+    min-width: 170px;
     margin-bottom: 5px;
 }
 .button
@@ -89,4 +89,13 @@ a:link, a:visited
 .img-container
 {
     text-align: center;
+}
+.required:after
+{
+    content: "*";
+    color: red;
+}
+.errorMessage
+{
+    color: red;
 }

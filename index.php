@@ -1,4 +1,9 @@
 <?php 
+#Revision History
+#Matheus Emidio (1931358) 2021-02-20 Inserted advertising function and verified its functionality without content.
+
+
+
 //Getting access functions file
 define("FOLDER_PHP", "PHP/");
 define("FILE_PHP_FUNCTIONS",FOLDER_PHP. "PHP-functions.php");
