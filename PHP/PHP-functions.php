@@ -5,6 +5,8 @@
 #Matheus Emidio (1931358) 2021-02-20 Worked on the beginning of the forms generator
 #Matheus Emidio (1931358) 2021-02-21 Worked on the function that will generate the advertising pictures 
 #Matheus Emidio (1931358) 2021-03-03 Added red asterix to the required fields, error messages and values to the form inputs 
+#Matheus Emidio (1931358) 2021-03-05 Added network headers for solving cache memory problem and modied the advertising generator function
+
 
 
 
@@ -16,6 +18,16 @@ require_once FILE_PHP_VARIABLES;
 
 function generateHeader($title)
 {
+    //Headers
+   //This means that the page already expired, so it will always get the page. Never having to press crtl F5 again (always put the date on the past to make it already expired)
+   //Force the browser to read it again (use the three of them)
+   header("Expires: Thu, 01 Dec 1994 14:00:00 GMT");    //watch out with the spaces and every detail, it can break. It has to be exactly like this
+   
+   header("Cache-Control: no-cache");
+   
+   header("Pragma: no-cache");
+   
+   header('Content-Type: text/html; charset=UTF-8');
     ?><!DOCTYPE html>
         <html>
             <head>
@@ -182,20 +194,25 @@ function createForm()
 
     function showAdvertisingPicture()
     {
-        $ads = array(FILE_AD1_BIGGER, FILE_AD2, FILE_AD3, FILE_AD4, FILE_AD5 );
-        shuffle($ads);
+        //Calling the global variable that is an array of arrays.
+        global $array_products;
+        shuffle($array_products);
         ?>
             <div class="img-container">
         <?php
-                if($ads[0] == FILE_AD1_BIGGER)
+                //If the path of the array element is equal to the FILE_AD1_BIGGER, it will have a different class that is going to show it 100% bigger and with a border.
+                if($array_products[0]["path"] == FILE_AD1_BIGGER)
                 {
-                    ?>
-                        <a href="https://www.google.com/"><img class="advertising-picture-bigger" src="<?php echo $ads[0]; ?>" alt="advertising"/></a>            
+                    //The image source and the text are called from the array element that has these content
+                    ?>                    
+                        <a href="https://www.google.com/"><img class="advertising-picture-bigger" src="<?php echo $array_products[0]["path"]; ?>" alt="advertising"/></a>     
+                        <p class="aboutText"><?php echo $array_products[0]["about"]; ?> </p>
                     <?php
                 }
                 else{
                     ?>
-                        <a href="https://www.google.com/"><img class="advertising-picture" src="<?php echo $ads[0]; ?>" alt="advertising"/></a>
+                        <a href="https://www.google.com/"><img class="advertising-picture" src="<?php echo $array_products[0]["path"]; ?>" alt="advertising"/></a>
+                        <p class="aboutText"><?php echo $array_products[0]["about"]; ?> </p>                        
                     <?php
                 }
         ?>

@@ -3,7 +3,7 @@
 #Matheus Emidio (1931358) 2021-02-18 Worked on the dynamic path for folders and php files
 #Matheus Emidio (1931358) 2021-02-19 Worked on the dynamic path for the images, but still have to add the content
 #Matheus Emidio (1931358) 2021-03-03 Prepared arrays for products to receive future content and created required variables for form input
-
+#Matheus Emidio (1931358) 2021-03-05 Added images to the folder and content to the arrays.
 
 
 
@@ -30,32 +30,37 @@ define("FILE_AD5",  FOLDER_IMG . "ad5.png");
 
 
 $array_seixas = array(
-    "path" => "",
-    "about" => "",
-    "price" => "",    
+    "path" => FILE_AD1_BIGGER,
+    "about" => "This destination is located only 500 meters from the coast of Seixas beach. This point is known as the easternmost point of the Americas. There, you will be able to find a natural bank of corals, covered by seawater, which is visible only when the tide is low, forming natural pools of warm, crystal clear water that allow you to view colorful fish and other sea animals. Come visit this true ecological paradise, nicknamed the Brazilian Caribbean.",
+    "price" => "R$ 50,00",    
 );
 
 $array_sunset = array(
-    "path" => "",
-    "about" => "",
-    "price" => "",     
+    "path" => FILE_AD4,
+    "about" => "Located in the Paraiba River, in Cabedelo, this boat ride has many wonderful attractions. Leaving from a pier, our boat takes a tour through the river. You will be able to view the natural beauty of the region while hearing its history and geographic information from a Tourism Guide, accredited by the Ministry of Tourism. In addition to this, you will be able to see and participate in a cultural dance show, performed by a couple of 'cangaceiros', performing the roles of historical figures from our region, Lampiao and Maria Bonita. In the end, you will be able to contemplate one of the most beautiful sunsets to the sound of a live performance of Jurandy do Sax, a Guinness book recordist saxophone musician.",
+    "price" => "R$ 50,00",     
 );
 $array_picaozinho = array(
-    "path" => "",
-    "about" => "",
-    "price" => "",     
+    "path" => FILE_AD2,
+    "about" => "This ride is only located 2 kilometers from the coast of Tambau beach, in Joao Pessoa. In Picãozinho, you will be able to see a natural bank of corals that form pools of clear waters, allowing you to view colorful fish and other marine animals. The colorful fish are the attraction of Picãozinho, they crowd around you, giving you an experience that will turn to be an unforgettable memory.",
+    "price" => "R$ 60,00",     
 );
 $array_areia = array(
-    "path" => "",
-    "about" => "",
-    "price" => "",     
+    "path" => FILE_AD3,
+    "about" => "Located in Poço Beach, in Cabedelo, this destination is another great beauty of Joao Pessoa. There you will be able to witness the island of Areia Vermelha, formed by a huge sandbank of a different color, reddish, covered by seawater, being visible only when the tide is low, forming natural pools of warm and transparent waters.",
+    "price" => "R$ 40,00",     
 );
-
+$array_pirate = array(
+    "path" => FILE_AD5,
+    "about" => "Enjoy a ride in our thematic boat through crystal clear, warm waters.. Here you will be able to enjoy good service, use our water slide, board to jump, gazebo for photos, and the 1st floor with panoramic view. Perfect place to live great experiences.",
+    "price" => "R$ 70,00",  
+);
 $array_products = array(
     $array_areia,
     $array_picaozinho,
     $array_seixas,
     $array_sunset,
+    $array_pirate,
 );
 
 //Variables for form 

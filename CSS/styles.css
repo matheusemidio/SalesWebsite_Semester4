@@ -77,13 +77,13 @@ a:link, a:visited
 }
 .advertising-picture
 {
-    width: 100px;
-    height: 100px;
+    width: 400px;
+    height: 400px;
 }
 .advertising-picture-bigger 
 {
-    width: 200px;
-    height: 200px;
+    width: 800px;
+    height: 800px;
     border: 5px solid red;
 }
 .img-container
@@ -98,4 +98,14 @@ a:link, a:visited
 .errorMessage
 {
     color: red;
+}
+.aboutText
+{
+    font-family: Calibri;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: justify;
+    margin: 40px;
+    
+    
 }
