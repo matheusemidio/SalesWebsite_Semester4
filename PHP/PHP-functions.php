@@ -6,6 +6,8 @@
 #Matheus Emidio (1931358) 2021-02-21 Worked on the function that will generate the advertising pictures 
 #Matheus Emidio (1931358) 2021-03-03 Added red asterix to the required fields, error messages and values to the form inputs 
 #Matheus Emidio (1931358) 2021-03-05 Added network headers for solving cache memory problem and modied the advertising generator function
+#Matheus Emidio (1931358) 2021-03-09 Created function to handle the calculation of grand total, subtotal and taxes. Also created function to write on the text file and another to read from it. 
+
 
 
 
@@ -218,4 +220,95 @@ function createForm()
         ?>
             </div>
         <?php
+    }
+    function calculate()
+    {
+        //Adding global variables required
+        global $subtotal;
+        global $taxesAmout;
+        global $grandTotal;
+        global $price;
+        global $quantity;    
+             
+        //Calculating
+        $subtotal = $price * $quantity;
+        $taxesAmout = $subtotal * LOCAL_TAXES;
+        //number_format function will force the number to have the amount of decimal digits required, no matter if he had less or more than it.
+        $grandTotal = number_format($subtotal + $taxesAmout, GRAND_TOTAL_PRECISION); 
+    }
+    
+    function writeClientInput()
+    {
+        //Adding global variables required
+        global $firstname;
+        global $lastname;
+        global $city;
+        global $comment;
+        global $price;
+        global $quantity;         
+        global $subtotal;
+        global $taxesAmout;
+        global $grandTotal;
+        global $array_client_input;
+        
+        //Saving data to the array
+        $array_client_input = array();
+        $array_client_input["firstName"] = $firstname;
+        $array_client_input["lastName"] = $lastname;
+        $array_client_input["city"] = $city;
+        $array_client_input["comment"] = $comment;
+        $array_client_input["price"] = $price;
+        $array_client_input["quantity"] = $quantity;
+        $array_client_input["subtotal"] = $subtotal;
+        $array_client_input["taxesAmount"] = $taxesAmout;
+        $array_client_input["grandTotal"] = $grandTotal;
+        
+        //Passing array data to text file
+        //the accent in Montréal is being passed as Montr\u00e9al to the text file
+        $input = json_encode($array_client_input). "\r\n";
+        $fileHandle = fopen(FILE_PURCHASES, "a") or die("Cannot open the file");
+        fwrite($fileHandle, $input);
+        
+        fclose($fileHandle);
+        
+        
+    }
+    function readClientInput()
+    {       
+        $myArray = array();
+        $counter = 0;
+        $content = "";
+        $fileHandle = fopen(FILE_PURCHASES, "r") or die("Cannot open the file");        
+        while(!feof($fileHandle))
+        {
+            //fgets read only one line
+            //$content = fgets($fileHandle) . "<br>";
+            $content = fgets($fileHandle);
+
+            //Here I have the information for the first line of the text file, showing that I'm able to read it and display
+            echo $content;
+            
+            echo "<br>";
+            //Problem to be solved -> json_decode was returning null everytime, now its returning me two array elements, one is the actual line that I wanted and the other is a null.
+            $myArray[$counter] = json_decode($content, true);
+            $counter++;
+        }        
+        fclose($fileHandle);       
+        echo "<br>";        
+        echo "<br>";
+        var_dump($myArray);
+        
+        echo "<br>";
+        echo "<br>";        
+        var_dump($myArray[0])
+        ;
+        echo "<br>";
+        echo "<br>";         
+        var_dump($myArray[0]["firstName"]);
+        
+        echo "<br>";
+        echo "<br>";
+        var_dump($myArray[0]["city"]);
+        
+        echo '<br>Done';
     }

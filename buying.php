@@ -2,6 +2,7 @@
 #Revision History
 #Matheus Emidio (1931358) 2021-02-20 Worked on the receiving user's input
 #Matheus Emidio (1931358) 2021-03-03 Added trim function to the user's input, build the validation and created the error messages to be displayed
+#Matheus Emidio (1931358) 2021-03-09 Worked on the calculation of subtotal, taxes amount and grand total and inserted function to interact with the text file.
 
 
 //Getting access functions file
@@ -10,7 +11,6 @@ define("FILE_PHP_FUNCTIONS",FOLDER_PHP. "PHP-functions.php");
 
 
 require_once FILE_PHP_FUNCTIONS;
-
 
 
 //Beginning of the HTML 
@@ -255,8 +255,12 @@ generateHeader("Buying");
                     //No errors detected after the validation
                     if(($errorFirstName == "") && ($errorLastName == "") && ($errorProductCode == "") && ($errorCity == "") && ($errorQuantity == "") && ($errorPrice == "") && ($errorComment == ""))
                     {
+                        global $subtotal;
+                        global $taxesAmout;
+                        global $grandTotal;
                         //Saving
-                        
+                        calculate();
+                        writeClientInput();
                         //Debug tools
                         echo "Product Code: $product_code <br>";
                         echo "First Name: $firstname <br>";
@@ -265,6 +269,9 @@ generateHeader("Buying");
                         echo "Comment: $comment <br>";
                         echo "Price: $price <br>";
                         echo "Quantity: $quantity <br>"; 
+                        echo "Subtotal: $subtotal <br>" ;
+                        echo "Taxes amount: $taxesAmout <br>";
+                        echo "Grand total: $grandTotal <br>";
                         
                        
                     }                                                                             

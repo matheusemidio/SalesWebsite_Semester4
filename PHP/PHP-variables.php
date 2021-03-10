@@ -4,6 +4,7 @@
 #Matheus Emidio (1931358) 2021-02-19 Worked on the dynamic path for the images, but still have to add the content
 #Matheus Emidio (1931358) 2021-03-03 Prepared arrays for products to receive future content and created required variables for form input
 #Matheus Emidio (1931358) 2021-03-05 Added images to the folder and content to the arrays.
+#Matheus Emidio (1931358) 2021-03-09 Added variables required for the subtotal, taxes amount and grand total calculations
 
 
 
@@ -28,6 +29,9 @@ define("FILE_AD3",  FOLDER_IMG . "ad3.png");
 define("FILE_AD4",  FOLDER_IMG . "ad4.png");
 define("FILE_AD5",  FOLDER_IMG . "ad5.png");
 
+ //Text File Variables  
+ define("FOLDER_DATA", "DATA/");
+ define("FILE_PURCHASES", FOLDER_DATA . "purchases.txt");
 
 $array_seixas = array(
     "path" => FILE_AD1_BIGGER,
@@ -66,15 +70,24 @@ $array_products = array(
 //Variables for form 
 define("PRODUCT_CODE_MAX_LENGTH", 12);
 define("PRODUCT_CODE_REQUIRED_INITIAL_CHAR", "P");
+
 define("FIRST_NAME_MAX_LENGTH", 20);
 define("LAST_NAME_MAX_LENGTH", 20);
+
 define("CITY_MAX_LENGTH", 8);
+
 define("COMMENT_MIN_LENGTH", 0);
 define("COMMENT_MAX_LENGTH", 200);
+
 define("PRICE_MIN", 0);
 define("PRICE_MAX", 10000);
+
 define("QUANTITY_MIN", 1);
 define("QUANTITY_MAX", 99);
+
+define("LOCAL_TAXES", (12.05/100));
+define("GRAND_TOTAL_PRECISION", 2);
+
 $product_code = "";
 $firstname = "";
 $lastname = "";
@@ -82,6 +95,7 @@ $city = "";
 $comment = "";
 $price = "";
 $quantity = "";
+
 $errorProductCode = "";
 $errorFirstName = "";
 $errorLastName = "";
@@ -89,4 +103,21 @@ $errorCity = "";
 $errorComment = "";
 $errorPrice = "";
 $errorQuantity = "";
+
+$subtotal = 0;
+$taxesAmout = 0;
+$grandTotal = 0;
+
+$array_client_input = array(
+    "firstName" => "",
+    "lastName" => "",
+    "city" => "",
+    "comment" => "",
+    "price" => 0, 
+    "quantity" => 0,
+    "subtotal" => 0,
+    "taxesAmount" => 0,
+    "grandTotal" => 0
+);
+
 
