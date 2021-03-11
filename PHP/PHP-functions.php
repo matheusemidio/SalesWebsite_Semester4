@@ -7,7 +7,7 @@
 #Matheus Emidio (1931358) 2021-03-03 Added red asterix to the required fields, error messages and values to the form inputs 
 #Matheus Emidio (1931358) 2021-03-05 Added network headers for solving cache memory problem and modied the advertising generator function
 #Matheus Emidio (1931358) 2021-03-09 Created function to handle the calculation of grand total, subtotal and taxes. Also created function to write on the text file and another to read from it. 
-
+#Matheus Emidio (1931358) 2021-03-10 Fixed the previous problem with the array, created function to build table and corrected some bugs with the validation
 
 
 
@@ -119,14 +119,16 @@ function createForm()
     global $errorComment;
     global $errorPrice;
     global $errorQuantity;
+    global $errorGeneral;
     
-    
+    //Added errorGeneral to tell the form if all the inputs were correctly validated. If errorGeneral is empty, it means that all the inputs are valid and should be erased
+    //if errorGeneral is not empty, it means that we should keep the previous inputed information on the text box.
     ?>
         <form action="buying.php" method="POST" class="form">
                 <p>
                     
                     <label class="required" for="productcode"> Product Code: </label>
-                    <input type="text" name="productcode" placeholder="P45MOUSE" value="<?php echo $product_code; ?>"/>
+                    <input type="text" name="productcode" placeholder="P45MOUSE" value="<?php echo($errorGeneral == "")? "":$product_code; ?>"/>
                     <span class="errorMessage">
                         <?php 
                             echo $errorProductCode;
@@ -135,7 +137,7 @@ function createForm()
                     <br>
                     
                     <label class="required" for="firstname"> Customer First Name: </label>
-                    <input type="text" name="firstname" placeholder="Matheus" value="<?php echo $firstname; ?>"/>
+                    <input type="text" name="firstname" placeholder="Matheus" value="<?php echo($errorGeneral == "")? "": $firstname; ?>"/>
                     <span class="errorMessage">
                         <?php 
                             echo $errorFirstName;
@@ -144,7 +146,7 @@ function createForm()
                     <br>
                     
                     <label class="required" for="lastname">Customer Last Name: </label>
-                    <input type="text" name="lastname" placeholder="Cadena" value="<?php echo $lastname; ?>"/>
+                    <input type="text" name="lastname" placeholder="Cadena" value="<?php echo($errorGeneral == "")? "": $lastname; ?>"/>
                     <span class="errorMessage">
                         <?php 
                             echo $errorLastName;
@@ -153,7 +155,7 @@ function createForm()
                     <br>
                     
                     <label class="required" for="city">Customer City: </label>
-                    <input type="text" name="city" placeholder="Montréal" value="<?php echo $city; ?>"/>
+                    <input type="text" name="city" placeholder="Montréal" value="<?php echo($errorGeneral == "")? "": $city; ?>"/>
                     <span class="errorMessage">
                         <?php 
                             echo $errorCity;
@@ -162,7 +164,7 @@ function createForm()
                     <br>
                     
                     <label for="comment">Comment: </label>
-                    <input type="text" name="comment" value="<?php echo $comment; ?>"/>
+                    <input type="text" name="comment" value="<?php echo($errorGeneral == "")? "": $comment; ?>"/>
                     <span class="errorMessage">
                         <?php 
                             echo $errorComment;
@@ -171,7 +173,7 @@ function createForm()
                     <br>
                     
                     <label class="required" for="price">Price: </label>
-                    <input type="text" name="price" value=" <?php echo $price; ?>"/>
+                    <input type="text" name="price" value=" <?php echo($errorGeneral == "")? "": $price; ?>"/>
                     <span class="errorMessage">
                         <?php 
                             echo $errorPrice;
@@ -180,7 +182,7 @@ function createForm()
                     <br>
                     
                     <label class="required" for="quantity">Quantity: </label>
-                    <input type="text" name="quantity" value="<?php echo $quantity; ?>"/>
+                    <input type="text" name="quantity" value="<?php echo($errorGeneral == "")? "": $quantity; ?>"/>
                     <span class="errorMessage">
                         <?php 
                             echo $errorQuantity;
@@ -231,8 +233,8 @@ function createForm()
         global $quantity;    
              
         //Calculating
-        $subtotal = $price * $quantity;
-        $taxesAmout = $subtotal * LOCAL_TAXES;
+        $subtotal = number_format($price * $quantity, SUBTOTAL_PRECISION);
+        $taxesAmout = number_format($subtotal * LOCAL_TAXES, TAXES_PRECISION);
         //number_format function will force the number to have the amount of decimal digits required, no matter if he had less or more than it.
         $grandTotal = number_format($subtotal + $taxesAmout, GRAND_TOTAL_PRECISION); 
     }
@@ -240,6 +242,7 @@ function createForm()
     function writeClientInput()
     {
         //Adding global variables required
+        global $product_code;
         global $firstname;
         global $lastname;
         global $city;
@@ -253,6 +256,7 @@ function createForm()
         
         //Saving data to the array
         $array_client_input = array();
+        $array_client_input["productCode"] = $product_code;
         $array_client_input["firstName"] = $firstname;
         $array_client_input["lastName"] = $lastname;
         $array_client_input["city"] = $city;
@@ -275,6 +279,7 @@ function createForm()
     }
     function readClientInput()
     {       
+        global $array_client_output;
         $myArray = array();
         $counter = 0;
         $content = "";
@@ -285,30 +290,92 @@ function createForm()
             //$content = fgets($fileHandle) . "<br>";
             $content = fgets($fileHandle);
 
-            //Here I have the information for the first line of the text file, showing that I'm able to read it and display
-            echo $content;
-            
-            echo "<br>";
-            //Problem to be solved -> json_decode was returning null everytime, now its returning me two array elements, one is the actual line that I wanted and the other is a null.
-            $myArray[$counter] = json_decode($content, true);
-            $counter++;
+            //Handling the end of character from the text file
+            if($content != "")
+            {
+                //Here I have the information for the first line of the text file, showing that I'm able to read it and display
+                 //echo $content;
+
+                 //echo "<br>";
+                 //Problem to be solved -> json_decode was returning null everytime, now its returning me two array elements, one is the actual line that I wanted and the other is a null.
+                 $myArray[$counter] = json_decode($content, true);
+                 $counter++;                
+            }
+ 
         }        
-        fclose($fileHandle);       
-        echo "<br>";        
-        echo "<br>";
-        var_dump($myArray);
+        fclose($fileHandle);   
+        $array_client_output = $myArray;
+        //echo "<br>";        
+        //echo "<br>";
+        //var_dump($myArray);
         
-        echo "<br>";
-        echo "<br>";        
-        var_dump($myArray[0])
-        ;
-        echo "<br>";
-        echo "<br>";         
-        var_dump($myArray[0]["firstName"]);
+        //echo "<br>";
+        //echo "<br>";        
+        //var_dump($myArray[0]);
+        //echo "<br>";
+        //echo "<br>";         
+        //var_dump($myArray[0]["firstName"]);
         
-        echo "<br>";
-        echo "<br>";
-        var_dump($myArray[0]["city"]);
+        //echo "<br>";
+        //echo "<br>";
+        //var_dump($myArray[0]["city"]);
         
-        echo '<br>Done';
+        
+        //echo '<br>Done';
+    }
+    
+    function generateTable()
+    {
+        global $array_client_output;
+        //Checking if file exists
+        if(file_exists(FILE_PURCHASES))
+        {
+            ?>
+                <table class="productTable">
+                    <thead>
+                        <tr>
+                            <th>Product ID</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>City</th>
+                            <th>Comments</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Subtotal</th>
+                            <th>Taxes</th>
+                            <th>Grand Total</th>                            
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                        <?php                            
+                            for($counter = 0; $counter < count($array_client_output); $counter++)
+                            {
+                                //Excluding null elements, just to make sure
+                                if($array_client_output[$counter] != "")
+                                {
+                                    //Writing lines of the table
+                                    ?>
+                                        <tr> 
+                                            <td><?php echo $array_client_output[$counter]["productCode"]; ?>    </td>
+                                            <td><?php echo $array_client_output[$counter]["firstName"];?>       </td>
+                                            <td><?php echo $array_client_output[$counter]["lastName"];?>        </td>
+                                            <td><?php echo $array_client_output[$counter]["city"];?>            </td>
+                                            <td><?php echo $array_client_output[$counter]["comment"];?>         </td>
+                                            <td><?php echo $array_client_output[$counter]["price"];?>$          </td>
+                                            <td><?php echo $array_client_output[$counter]["quantity"];?>        </td>
+                                            <td><?php echo $array_client_output[$counter]["subtotal"];?>$       </td>
+                                            <td><?php echo $array_client_output[$counter]["taxesAmount"];?>$    </td>
+                                            <td><?php echo $array_client_output[$counter]["grandTotal"];?>$     </td>                                            
+                                        </tr>
+                                    <?php
+                                }
+                            }
+                        ?>
+                    </tbody>
+                </table>
+            <?php
+        }
+    
+
     }

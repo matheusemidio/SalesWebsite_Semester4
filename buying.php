@@ -3,7 +3,7 @@
 #Matheus Emidio (1931358) 2021-02-20 Worked on the receiving user's input
 #Matheus Emidio (1931358) 2021-03-03 Added trim function to the user's input, build the validation and created the error messages to be displayed
 #Matheus Emidio (1931358) 2021-03-09 Worked on the calculation of subtotal, taxes amount and grand total and inserted function to interact with the text file.
-
+#Matheus Emidio (1931358) 2021-03-10 Inserted confirmation messages and variable to handle validation bug.
 
 //Getting access functions file
 define("FOLDER_PHP", "PHP/");
@@ -17,10 +17,6 @@ require_once FILE_PHP_FUNCTIONS;
 generateHeader("Buying");
 
     //Beginning of calling and writing space
-        ?>
-            <p>Buying Page!</p>
-        <?php
-
             if(isset($_POST["save"]))
                 {
                     //Getting input from the user
@@ -191,6 +187,8 @@ generateHeader("Buying");
                                 else
                                 {
                                     $errorPrice = "";
+                                    //Formatting price to only have two decilams
+                                    $price = number_format($price, PRICE_PRECISION);
                                 }
                             }
                         }
@@ -241,7 +239,7 @@ generateHeader("Buying");
 
                         }
                     }
-                    
+                        $errorGeneral = "error";
                         //Debug tools
                         //echo "Error Product Code: $errorProductCode <br>";
                         //echo "Error First Name: $errorFirstName <br>";
@@ -255,23 +253,27 @@ generateHeader("Buying");
                     //No errors detected after the validation
                     if(($errorFirstName == "") && ($errorLastName == "") && ($errorProductCode == "") && ($errorCity == "") && ($errorQuantity == "") && ($errorPrice == "") && ($errorComment == ""))
                     {
+                        echo "<br>All the data entered was validated successfully.<br>";
+                     
                         global $subtotal;
                         global $taxesAmout;
                         global $grandTotal;
                         //Saving
                         calculate();
                         writeClientInput();
+                        echo "<br>Order Confirmed! Thank you.<br>";
+                        $errorGeneral = "";
                         //Debug tools
-                        echo "Product Code: $product_code <br>";
-                        echo "First Name: $firstname <br>";
-                        echo "Last Name: $lastname <br>";
-                        echo "City: $city <br>";
-                        echo "Comment: $comment <br>";
-                        echo "Price: $price <br>";
-                        echo "Quantity: $quantity <br>"; 
-                        echo "Subtotal: $subtotal <br>" ;
-                        echo "Taxes amount: $taxesAmout <br>";
-                        echo "Grand total: $grandTotal <br>";
+                        //echo "Product Code: $product_code <br>";
+                        //echo "First Name: $firstname <br>";
+                        //echo "Last Name: $lastname <br>";
+                        //echo "City: $city <br>";
+                        //echo "Comment: $comment <br>";
+                        //echo "Price: $price <br>";
+                        //echo "Quantity: $quantity <br>"; 
+                        //echo "Subtotal: $subtotal <br>" ;
+                        //echo "Taxes amount: $taxesAmout <br>";
+                        //echo "Grand total: $grandTotal <br>";
                         
                        
                     }                                                                             

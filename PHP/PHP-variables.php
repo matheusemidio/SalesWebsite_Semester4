@@ -5,7 +5,7 @@
 #Matheus Emidio (1931358) 2021-03-03 Prepared arrays for products to receive future content and created required variables for form input
 #Matheus Emidio (1931358) 2021-03-05 Added images to the folder and content to the arrays.
 #Matheus Emidio (1931358) 2021-03-09 Added variables required for the subtotal, taxes amount and grand total calculations
-
+#Matheus Emidio (1931358) 2021-03-10 Corrected mistake on array_client_input, added another support array and necessary support variables to handle existing bugs on the validation.
 
 
 //  CSS Variables
@@ -87,6 +87,9 @@ define("QUANTITY_MAX", 99);
 
 define("LOCAL_TAXES", (12.05/100));
 define("GRAND_TOTAL_PRECISION", 2);
+define("SUBTOTAL_PRECISION", 2);
+define("TAXES_PRECISION", 2);
+define("PRICE_PRECISION", 2);
 
 $product_code = "";
 $firstname = "";
@@ -103,12 +106,14 @@ $errorCity = "";
 $errorComment = "";
 $errorPrice = "";
 $errorQuantity = "";
+$errorGeneral = "";
 
 $subtotal = 0;
 $taxesAmout = 0;
 $grandTotal = 0;
 
 $array_client_input = array(
+    "productCode" => "",
     "firstName" => "",
     "lastName" => "",
     "city" => "",
@@ -120,4 +125,16 @@ $array_client_input = array(
     "grandTotal" => 0
 );
 
+$array_client_output = array(
+    "productCode" => "",    
+    "firstName" => "",
+    "lastName" => "",
+    "city" => "",
+    "comment" => "",
+    "price" => 0, 
+    "quantity" => 0,
+    "subtotal" => 0,
+    "taxesAmount" => 0,
+    "grandTotal" => 0
+);
 
