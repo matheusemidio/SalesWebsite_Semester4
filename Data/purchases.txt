@@ -1,0 +1,3 @@
+{"productCode":"P45MOUSE","firstName":"Matheus Emidio","lastName":"Cadena","city":"Montr\u00e9al","comment":"Some comment!","price":"10.45","quantity":"1","subtotal":10.45,"taxesAmount":1.26,"grandTotal":11.71}
+{"productCode":"p45CHEESE","firstName":"Ana Lucia","lastName":"Cadena","city":"Toronto","comment":"Another comment!","price":"20.5","quantity":"10","subtotal":205,"taxesAmount":24.7,"grandTotal":229.7}
+{"productCode":"p50APPLE","firstName":"Antonio","lastName":"Barbosa","city":"New York","comment":"Comment!","price":"2000","quantity":"20","subtotal":40000,"taxesAmount":4820,"grandTotal":44820}

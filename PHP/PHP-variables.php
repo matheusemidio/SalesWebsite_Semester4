@@ -6,19 +6,16 @@
 #Matheus Emidio (1931358) 2021-03-05 Added images to the folder and content to the arrays.
 #Matheus Emidio (1931358) 2021-03-09 Added variables required for the subtotal, taxes amount and grand total calculations
 #Matheus Emidio (1931358) 2021-03-10 Corrected mistake on array_client_input, added another support array and necessary support variables to handle existing bugs on the validation.
-
+#Matheus Emidio (1931358) 2021-03-13 Added variables required for the errors and exceptions and for the parameters for subtotal colors
 
 //  CSS Variables
 define("FOLDER_CSS_STYLESHEET", "CSS/");
 define("FILE_CSS_STYLESHEET", FOLDER_CSS_STYLESHEET. "styles.css");
 
-
 //  PHP Variables
-
 define("FILE_BUYING_PHP", "buying.php");
 define("FILE_INDEX_PHP", "index.php");
 define("FILE_ORDERS_PHP", "orders.php");
-
 
 //  IMG Variables
 define("FOLDER_IMG", "IMG/");
@@ -30,9 +27,21 @@ define("FILE_AD4",  FOLDER_IMG . "ad4.png");
 define("FILE_AD5",  FOLDER_IMG . "ad5.png");
 
  //Text File Variables  
- define("FOLDER_DATA", "DATA/");
+ define("FOLDER_DATA", "Data/");
  define("FILE_PURCHASES", FOLDER_DATA . "purchases.txt");
+ 
+ //Cheatsheet Variable
+ define("FILE_CHEATSHEET", FOLDER_DATA . "cheatsheet.docx");
 
+ //Errors Variables
+ define("FOLDER_LOG", "log/");
+ define("FILE_ERROR", FOLDER_LOG . "error.txt");
+ define("FILE_EXCEPTION", FOLDER_LOG . "exception.txt");
+ 
+ //Variable with the company short explanation
+ define("ABOUT_COMPANY", "Our company is called Paraiba Travel. It is based on the city of João Pessoa, in the state of Paraiba, Brazil. Here you can find many services related to tourim, but our specialty is to offer our clients boat rides in many destinations from our beautiful city.");
+ 
+//Arrays with the content of every product on the company
 $array_seixas = array(
     "path" => FILE_AD1_BIGGER,
     "about" => "This destination is located only 500 meters from the coast of Seixas beach. This point is known as the easternmost point of the Americas. There, you will be able to find a natural bank of corals, covered by seawater, which is visible only when the tide is low, forming natural pools of warm, crystal clear water that allow you to view colorful fish and other sea animals. Come visit this true ecological paradise, nicknamed the Brazilian Caribbean.",
@@ -59,6 +68,7 @@ $array_pirate = array(
     "about" => "Enjoy a ride in our thematic boat through crystal clear, warm waters.. Here you will be able to enjoy good service, use our water slide, board to jump, gazebo for photos, and the 1st floor with panoramic view. Perfect place to live great experiences.",
     "price" => "R$ 70,00",  
 );
+//Array that contains every array of products
 $array_products = array(
     $array_areia,
     $array_picaozinho,
@@ -91,6 +101,7 @@ define("SUBTOTAL_PRECISION", 2);
 define("TAXES_PRECISION", 2);
 define("PRICE_PRECISION", 2);
 
+//Declaration of variables to be used in the user's input
 $product_code = "";
 $firstname = "";
 $lastname = "";
@@ -99,6 +110,7 @@ $comment = "";
 $price = "";
 $quantity = "";
 
+//Declaration of error variables for user's input
 $errorProductCode = "";
 $errorFirstName = "";
 $errorLastName = "";
@@ -108,10 +120,12 @@ $errorPrice = "";
 $errorQuantity = "";
 $errorGeneral = "";
 
+//Declaration of variables that will be displayed on orders page
 $subtotal = 0;
 $taxesAmout = 0;
 $grandTotal = 0;
 
+//Declaration of arrays to be used in the text file interaction.
 $array_client_input = array(
     "productCode" => "",
     "firstName" => "",
@@ -138,3 +152,6 @@ $array_client_output = array(
     "grandTotal" => 0
 );
 
+//Color Function variables
+define("COLOR_MIN_PARAMETER", 100);
+define("COLOR_MAX_PARAMETER", 1000);

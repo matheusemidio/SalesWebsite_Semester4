@@ -1,6 +1,18 @@
+/*Revision History
+Matheus Emidio (1931358) 2021-02-18 Added style for body and all the navbar related
+Matheus Emidio (1931358) 2021-02-19 Added style for body content container
+Matheus Emidio (1931358) 2021-02-20 Added style for button and forms
+Matheus Emidio (1931358) 2021-02-21 Added style for advertising pictures 
+Matheus Emidio (1931358) 2021-03-03 Added style for required fields from the form and error messages
+Matheus Emidio (1931358) 2021-03-05 Added style for about content of the products
+Matheus Emidio (1931358) 2021-03-10 Added style for table
+Matheus Emidio (1931358) 2021-03-13 Added style that will be called for by the commands on the URL
+
+*/
+
 body
 {
-    background-color: lightblue;
+    background-color: #aad0e6;
     margin: 0;
 }
 ul
@@ -32,22 +44,24 @@ a:link, a:visited
 {
     width: 100%;
     height: 70px;
-    background-color: green;
+    background-color: #db8307;
 
 }
 .footer
 {
+    padding-top: 10px;
     width: 100%;
     height: 70px;
-    background-color: green;
+    background-color: #db8307;
     text-align: center;
+    
 }
 .container
 {
     max-width: 950px;
     height: auto;
     margin: 10px auto;
-    background-color: lightgray;       
+    background-color: #b8cbd6;       
 }
 .margin-zero
 {
@@ -129,4 +143,40 @@ th
     background-color:#82817d ;
     color: black;
     height: 70px;
+}
+.buttonCheatsheet
+{
+    width: 150px;
+    height: 30px;
+    
+    margin-left: 0px;
+    background-color: #2aa348;
+    border-radius: 8px;
+    border: 2px solid #2b8f43 ;
+}
+.buttonCheatsheet:hover
+{
+    background-color: #1c8c37;
+    border: 2px solid #1d7a34 ;
+
+}
+.redColor
+{
+  color: red;  
+}
+.lightOrangeColor
+{
+    color: #f09526;
+}
+.greenColor
+{
+    color: #0ecc2e;
+}
+.whiteBackground
+{
+    background-color: white;
+}
+.opacityChange
+{
+    opacity: 0.3;
 }

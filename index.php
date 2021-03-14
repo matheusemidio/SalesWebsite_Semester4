@@ -16,6 +16,7 @@ require_once FILE_PHP_FUNCTIONS;
 generateHeader("Home");
 
     //Calling and writing space
+        displayAbout();
         showAdvertisingPicture();
     //End of writing space
 

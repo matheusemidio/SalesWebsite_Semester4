@@ -4,6 +4,7 @@
 #Matheus Emidio (1931358) 2021-03-03 Added trim function to the user's input, build the validation and created the error messages to be displayed
 #Matheus Emidio (1931358) 2021-03-09 Worked on the calculation of subtotal, taxes amount and grand total and inserted function to interact with the text file.
 #Matheus Emidio (1931358) 2021-03-10 Inserted confirmation messages and variable to handle validation bug.
+#Matheus Emidio (1931358) 2021-03-13 Fixed bugs with the price validation
 
 //Getting access functions file
 define("FOLDER_PHP", "PHP/");
@@ -172,14 +173,14 @@ generateHeader("Buying");
                         else
                         {
                             //Checking if price is a positive number
-                            if((float)$price < PRICE_MIN)
+                            if($price < PRICE_MIN)
                             {
                                 $errorPrice = "The price has to be a positive number";
                             }
                             else
                             {
                                 //Checking if price exceeds the maximum predefined
-                                if((float)$price > PRICE_MAX)
+                                if($price > PRICE_MAX)
                                 {
                                     $errorPrice = "The price can not be higher than " . PRICE_MAX . "$.";
                                 }
@@ -187,8 +188,7 @@ generateHeader("Buying");
                                 else
                                 {
                                     $errorPrice = "";
-                                    //Formatting price to only have two decilams
-                                    $price = number_format($price, PRICE_PRECISION);
+                                    
                                 }
                             }
                         }
