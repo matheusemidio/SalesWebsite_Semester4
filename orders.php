@@ -17,9 +17,10 @@ require_once FILE_PHP_FUNCTIONS;
 generateHeader("Orders");
 
     //Calling and writing space
-
     readClientInput();
     generateTable();
+    //loginForm("orders");
+
 //End of the HTML
 generateFooter();
 

@@ -7,6 +7,7 @@
 #Matheus Emidio (1931358) 2021-03-09 Added variables required for the subtotal, taxes amount and grand total calculations
 #Matheus Emidio (1931358) 2021-03-10 Corrected mistake on array_client_input, added another support array and necessary support variables to handle existing bugs on the validation.
 #Matheus Emidio (1931358) 2021-03-13 Added variables required for the errors and exceptions and for the parameters for subtotal colors
+#Matheus Emidio (1931358) 2021-04-24 Added variables required for the Database, connection, objects folders and login feature
 
 //  CSS Variables
 define("FOLDER_CSS_STYLESHEET", "CSS/");
@@ -16,6 +17,7 @@ define("FILE_CSS_STYLESHEET", FOLDER_CSS_STYLESHEET. "styles.css");
 define("FILE_BUYING_PHP", "buying.php");
 define("FILE_INDEX_PHP", "index.php");
 define("FILE_ORDERS_PHP", "orders.php");
+define("FILE_REGISTER", "register.php");
 
 //  IMG Variables
 define("FOLDER_IMG", "IMG/");
@@ -28,7 +30,7 @@ define("FILE_AD5",  FOLDER_IMG . "ad5.png");
 
  //Text File Variables  
  define("FOLDER_DATA", "Data/");
- define("FILE_PURCHASES", FOLDER_DATA . "purchases.txt");
+ //define("FILE_PURCHASES", FOLDER_DATA . "purchases.txt");
  
  //Cheatsheet Variable
  define("FILE_CHEATSHEET", FOLDER_DATA . "cheatsheet.docx");
@@ -38,6 +40,27 @@ define("FILE_AD5",  FOLDER_IMG . "ad5.png");
  define("FILE_ERROR", FOLDER_LOG . "error.txt");
  define("FILE_EXCEPTION", FOLDER_LOG . "exception.txt");
  
+//Database
+define("FOLDER_DATABASE", "Database/");
+define("FILE_CONNECTION", FOLDER_DATABASE . "connection.php");
+
+//objects 
+define("FOLDER_OBJECTS", "objects/");
+define("FILE_CUSTOMER", FOLDER_OBJECTS . "customer.php");
+define("FILE_CUSTOMERS", FOLDER_OBJECTS . "customer.php");
+define("FILE_PRODUCT", FOLDER_OBJECTS . "product.php");
+define("FILE_PRODUCTS", FOLDER_OBJECTS . "products.php");
+define("FILE_PURCHASE", FOLDER_OBJECTS . "purchase.php");
+define("FILE_PURCHASES", FOLDER_OBJECTS . "purchases.php");
+define("FILE_COLLECTION", FOLDER_OBJECTS . "collection.php");
+
+//connection
+define("DATABASE", "dbname=database-1931358");
+define("DATABASE_USERNAME", "user-1931358");
+define("DATABASE_PASSWORD", "1931358");
+
+
+
  //Variable with the company short explanation
  define("ABOUT_COMPANY", "Our company is called Paraiba Travel. It is based on the city of João Pessoa, in the state of Paraiba, Brazil. Here you can find many services related to tourim, but our specialty is to offer our clients boat rides in many destinations from our beautiful city.");
  
@@ -119,6 +142,19 @@ $errorComment = "";
 $errorPrice = "";
 $errorQuantity = "";
 $errorGeneral = "";
+
+$address = "";
+$city = "";
+$postalCode = "";
+$username = "";
+$password = "";
+
+$errorAddress = "";
+$errorCity = "";
+$errorPostalCode = "";
+$errorUsername = "";
+$errorPassword = "";
+
 
 //Declaration of variables that will be displayed on orders page
 $subtotal = 0;

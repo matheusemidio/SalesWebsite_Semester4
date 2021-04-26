@@ -18,6 +18,8 @@ generateHeader("Home");
     //Calling and writing space
         displayAbout();
         showAdvertisingPicture();
+        //loginForm("index");
+
     //End of writing space
 
 

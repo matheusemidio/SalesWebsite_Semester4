@@ -13,7 +13,6 @@ define("FILE_PHP_FUNCTIONS",FOLDER_PHP. "PHP-functions.php");
 
 require_once FILE_PHP_FUNCTIONS;
 
-
 //Beginning of the HTML 
 generateHeader("Buying");
 
@@ -288,7 +287,8 @@ generateHeader("Buying");
 
     //End of writing space
     
-        
+        //loginForm("buying");
+
 //End of the HTML
 generateFooter();
 

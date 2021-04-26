@@ -7,6 +7,7 @@ Matheus Emidio (1931358) 2021-03-03 Added style for required fields from the for
 Matheus Emidio (1931358) 2021-03-05 Added style for about content of the products
 Matheus Emidio (1931358) 2021-03-10 Added style for table
 Matheus Emidio (1931358) 2021-03-13 Added style that will be called for by the commands on the URL
+#Matheus Emidio (1931358) 2021-04-24 Created login style
 
 */
 
@@ -179,4 +180,8 @@ th
 .opacityChange
 {
     opacity: 0.3;
+}
+.login
+{
+    
 }

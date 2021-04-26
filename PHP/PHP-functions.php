@@ -10,6 +10,8 @@
 #Matheus Emidio (1931358) 2021-03-10 Fixed the previous problem with the array, created function to build table and corrected some bugs with the validation
 #Matheus Emidio (1931358) 2021-03-12 Added function to download cheatsheet
 #Matheus Emidio (1931358) 2021-03-13 Added functions to modify page by the URL commands and corrected the bugs caused by the number_format function
+#Matheus Emidio (1931358) 2021-04-24 Created login and register functions
+
 
 
 //Getting access to the variables definition file
@@ -27,7 +29,7 @@ function generateHeader($title)
 
     
     //Remember to change this to false
-    $debug = false;
+    $debug = true;
     function manageError($errorNumber, $errorMessage, $errorFile, $errorLine)
     {
         global $debug;
@@ -38,7 +40,7 @@ function generateHeader($title)
         if($debug == true)
         {
             echo "An error occured in the file $errorFile at line $errorLine:"
-                . "Error number $errorNumber: $errorMessage";           
+                . "Error number $errorNumber: $errorMessage"; 
         }
         else
         {
@@ -588,4 +590,150 @@ function createForm()
                 <p class="aboutText"> <?php echo ABOUT_COMPANY; ?></p>
             </span>
         <?php
+    }
+    
+    function loginForm($title)
+    {   $username == "";
+        if($username == "")
+        {
+            ?>
+                <div class = "login">
+                    <form action="<?php echo $title; ?>.php" method="POST" class="form">
+                        <p>
+                            <label for="username"> Username: </label>
+                            <input type="text" name="username" placeholder="matheusemidio" value="<?php //echo($errorGeneral == "")? "":$product_code; ?>"/>
+                            <span class="errorMessage">
+                                <?php 
+                                    //echo $errorProductCode;
+                                ?>
+                            </span>                    
+                            <br>
+                            <label for="password"> Password: </label>
+                            <input type="text" name="password" placeholder="password" value="<?php //echo($errorGeneral == "")? "":$product_code; ?>"/>
+                            <span class="errorMessage">
+                                <?php 
+                                    //echo $errorProductCode;
+                                ?>
+                            </span>                    
+                            <br>
+                            
+                            <input type="submit" value="Login" name="login" class="button" />
+                        </p>
+                    </form>
+                </div>    
+            <?php
+        }
+        
+        else
+        {
+            ?>
+                <div class="login">
+            <?php        
+            //User is logged in
+//----------Still needs to Load
+            echo "Welcome " . $firstName . " " . $lastName;
+            
+            //Loggout part
+            ?>
+                <form action ="<?php echo $title; ?>.php" method="POST" class="form" >
+                    <br>
+                    <input type="submit" value="Logout" name="logout" class="button" />
+                    <span>Need a user account? <a href="<?php echo FILE_REGISTER; ?>">Register</a> </span>
+    
+                </form>
+            <?php
+            ?>
+                </div>
+            <?php  
+        }
+ 
+    }
+    
+    function register()
+    {
+        global $firstname;
+        $firstname = "";
+        global $lastname;
+        $lastname = "";
+        global $address;
+        global $city;
+        global $postalCode;
+        global $username;
+        global $password;
+        global $errorFirstName;
+        global $errorLastName;
+        global $errorAddress;
+        global $errorCity;
+        global $errorPostalCode;
+        global $errorUsername;
+        global $errorPassword;
+        ?>
+            <div>
+                <br>
+        <?php  
+        
+        ?>
+            <form action="action" method="POST">
+                <label class="required" for="firstName"> First Name: </label>
+                <input type="text" name="firstName" placeholder="Matheus" value="<?php echo($errorGeneral == "")? "":$firstName; ?>"/>
+                <span class="errorMessage">
+                    <?php 
+                        echo $errorFirstName;
+                    ?>
+                </span>                    
+                <br>
+                <label class="required" for="lastName"> Product Code: </label>
+                <input type="text" name="lastName" placeholder="Cadena" value="<?php echo($errorGeneral == "")? "":$lastname; ?>"/>
+                <span class="errorMessage">
+                    <?php 
+                        echo $errorLastName;
+                    ?>
+                </span>                    
+                <br>
+                <label class="required" for="address"> Product Code: </label>
+                <input type="text" name="address" placeholder="5178" value="<?php echo($errorGeneral == "")? "":$address; ?>"/>
+                <span class="errorMessage">
+                    <?php 
+                        echo $errorAddress;
+                    ?>
+                </span>                    
+                <br>
+                <label class="required" for="city"> Product Code: </label>
+                <input type="text" name="city" placeholder="Montréal" value="<?php echo($errorGeneral == "")? "":$city; ?>"/>
+                <span class="errorMessage">
+                    <?php 
+                        echo $errorCity;
+                    ?>
+                </span>                    
+                <br>
+                <label class="required" for="postalCode"> Product Code: </label>
+                <input type="text" name="postalcode" placeholder="H1X 2N9" value="<?php echo($errorGeneral == "")? "":$postalCode; ?>"/>
+                <span class="errorMessage">
+                    <?php 
+                        echo $errorPostalCode;
+                    ?>
+                </span>                    
+                <br>
+                <label class="required" for="username"> Product Code: </label>
+                <input type="text" name="username" placeholder="matheusemidio" value="<?php echo($errorGeneral == "")? "":$username; ?>"/>
+                <span class="errorMessage">
+                    <?php 
+                        echo $errorUsername;
+                    ?>
+                </span>                    
+                <br>
+                <label class="required" for="password"> Product Code: </label>
+                <input type="text" name="password" placeholder="123456" value="<?php echo($errorGeneral == "")? "":$password; ?>"/>
+                <span class="errorMessage">
+                    <?php 
+                        echo $errorPassword;
+                    ?>
+                </span>                    
+                <br>
+                <input type="submit" value="Register" name="register" class="button" />
+            </form>
+        <?php
+        ?>
+            </div>
+        <?php  
     }
