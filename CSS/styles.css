@@ -7,7 +7,9 @@ Matheus Emidio (1931358) 2021-03-03 Added style for required fields from the for
 Matheus Emidio (1931358) 2021-03-05 Added style for about content of the products
 Matheus Emidio (1931358) 2021-03-10 Added style for table
 Matheus Emidio (1931358) 2021-03-13 Added style that will be called for by the commands on the URL
-#Matheus Emidio (1931358) 2021-04-24 Created login style
+#Matheus Emidio (1931358) 2021-04-24 Created login style 
+#Matheus Emidio (1931358) 2021-04-30 Create headers for register and update page
+
 
 */
 
@@ -52,7 +54,7 @@ a:link, a:visited
 {
     padding-top: 10px;
     width: 100%;
-    height: 70px;
+    height: 90px;
     background-color: #db8307;
     text-align: center;
     
@@ -183,5 +185,17 @@ th
 }
 .login
 {
-    
+    float: left;
+    margin-left: -10px;
+    height:60px;
+    padding:0;
+}
+.cheatsheet{
+    float: right;
+    margin-right:50px;
+}
+.header
+{
+    text-align: center;
+    color: red;
 }

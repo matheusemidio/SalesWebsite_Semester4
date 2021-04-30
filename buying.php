@@ -287,7 +287,6 @@ generateHeader("Buying");
 
     //End of writing space
     
-        //loginForm("buying");
 
 //End of the HTML
 generateFooter();

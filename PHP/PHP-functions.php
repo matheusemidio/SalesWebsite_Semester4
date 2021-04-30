@@ -11,13 +11,31 @@
 #Matheus Emidio (1931358) 2021-03-12 Added function to download cheatsheet
 #Matheus Emidio (1931358) 2021-03-13 Added functions to modify page by the URL commands and corrected the bugs caused by the number_format function
 #Matheus Emidio (1931358) 2021-04-24 Created login and register functions
+#Matheus Emidio (1931358) 2021-04-26 Moved login to navbar
+#                                    Added code to force redirect user to safe url
+#Matheus Emidio (1931358) 2021-04-30 Fixed register function and manage customer
 
 
+#Forcing user to be redirected to safe url
+if(!(isset($_SERVER["HTTPS"])) || $_SERVER["HTTPS"] != "on"){
+
+    header('Location: https://' . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]);
+    exit();
+}
 
 //Getting access to the variables definition file
 define("FILE_PHP_VARIABLES","PHP-variables.php");
+session_start();   
 
 require_once FILE_PHP_VARIABLES; 
+require_once FILE_PRODUCT;
+require_once FILE_PRODUCTS;
+require_once FILE_CUSTOMER;
+require_once FILE_CUSTOMERS;
+require_once FILE_PURCHASE;
+require_once FILE_PURCHASES;
+require_once FILE_CONNECTION;
+
 
 
 function generateHeader($title)
@@ -26,8 +44,106 @@ function generateHeader($title)
     //Created this function to display the first part of the html structure. Since we are working with php and want to generate HTML automatically,
     //the structure has been broken down into two parts. This was done to allow us to write in the middle.
     
-
+    //----------------------------------------------------
+    #global variable    
+    global $username;
+    global $currentPage;
+    $currrentPage = substr($_SERVER["SCRIPT_NAME"],strrpos($_SERVER["SCRIPT_NAME"],"/")+1);
     
+    function createCookie()
+    {      
+        global $currentPage; 
+        //$currrentPage = substr($_SERVER["SCRIPT_NAME"],strrpos($_SERVER["SCRIPT_NAME"],"/")+1);
+        if(isset($_POST["login"]))
+        {
+            //create a cookie called firstname
+            //The third parameter on setcookie is to tell when the cookie will expire. time() is equivalent to now. time() + 10 will expire after 10 seconds.
+            //The other parameters would be
+                //path
+                //domain
+                //secure -> important
+                //http -> important
+            #setcookie("firstname", htmlspecialchars($_POST["firstname"]), time() + 10 , "" , "", false, true);
+           
+            $_SESSION['username'] = htmlspecialchars(trim($_POST["username"]));
+            
+            //header("Location:" . $currentPage);
+            header("Location: index.php");
+            
+            die();    
+        }
+    } 
+    function deleteCookie()
+    {
+        global $currentPage;
+        //$currrentPage = substr($_SERVER["SCRIPT_NAME"],strrpos($_SERVER["SCRIPT_NAME"],"/")+1);
+        
+        //If I call the delete cookie, I am already sure that I received the form, so its not necessary to check it.
+        //The only way to deleta a cookie is by expiring it
+        //The cookie here will expire now minus one hour.
+        
+        //It will destroy all of them
+        session_destroy();
+        
+        //It will destroy only one
+        //unset($_SESSION['username']);
+        #setcookie("firstname", "", time() - 60*60, "" , "", false, true);
+        
+        //header("Location:" . $currentPage);
+        header("Location:index.php");
+        
+        die();        
+    }
+    function readCookie()
+    {
+        global $username;
+        //Checks if I have already a cookie
+        if(isset($_SESSION["username"]))
+        {
+            $username = htmlspecialchars($_SESSION["username"]);
+            //This is to make sure the client will stay logged in if he is active.
+            #setcookie("firstname", htmlspecialchars($_SESSION["firstname"]), time() + 10 , "" , "", false, true);            
+        }
+        else
+        {
+            $username = "";
+        }
+    }
+    //This is to make sure I dont send the header after the doctype
+   if(isset($_POST["login"]))
+    {    
+       #Login validation shoult go here
+       //global $username;
+       global $LoginMessage;
+       $username = trim($_POST["username"]);
+       $password = trim(($_POST["password"]));
+       $customer = new customer();
+       $LoginMessage = $customer->checkPassword($username, $password);
+       if($LoginMessage == "")
+       {
+            createCookie();
+
+       }
+       else{
+           deleteCookie();
+       }
+       
+       //createCookie();
+    }
+    else
+    {
+        if(isset($_POST["logout"]))
+        {
+            deleteCookie();
+        }
+        else
+        {
+            readCookie();
+
+        }
+    }
+    
+    //----------------------------------------------------
     //Remember to change this to false
     $debug = true;
     function manageError($errorNumber, $errorMessage, $errorFile, $errorLine)
@@ -78,8 +194,12 @@ function generateHeader($title)
         }
         die();
     }
-    set_error_handler("manageError");
-    set_exception_handler("manageException");
+    
+    //set_error_handler("manageError");
+    //set_exception_handler("manageException");
+    
+    
+    
     
     //Headers for Cache memory
     //This means that the page already expired, so it will always get the page. Never having to press crtl F5 again (always put the date on the past to make it already expired)
@@ -132,13 +252,18 @@ function generateFooter()
     //Goal:
     //Create this function to close what has been open before: the container for body content and the html structure.
     createFootContainer();
-    
+    global $currentPage;
+
     //This function will have the button to download the cheatsheet, calling the downloadCheatSheet() and also the date on the copyright will be dynamic.
+    //This function will have the login form that will call the global current page to input on the action field from the form
     ?>
         
         <div class="footer">    
-            <?php downloadCheatSheet(); ?> 
-            <br><br>&copy; Matheus Emidio (1931358) <?php echo date('Y'); ?>     
+            <?php loginForm($currentPage); ?>
+            <div class="cheatsheet">
+                <?php downloadCheatSheet(); ?> 
+                <br><br>&copy; Matheus Emidio (1931358) <?php echo date('Y'); ?>   
+            </div>
             </body>
             </html>
         </div>
@@ -149,6 +274,8 @@ function createNavigationMenu()
 {
     //Goal:
     //This function was created to display the structure for the navigation bar. It will be called in the header. Path to the php pages are dynamic
+    
+    global $username;
         ?>       
         <div class="navbar">
                 <nav>
@@ -156,7 +283,22 @@ function createNavigationMenu()
                     <ul>  
                         <li><a href=" <?php echo FILE_INDEX_PHP; ?>">Home</a></li>                        
                         <li><a href="<?php echo FILE_ORDERS_PHP; ?>">Orders</a></li>
-                        <li><a href="<?php echo FILE_BUYING_PHP; ?>">Buying</a></li>   
+                        <li><a href="<?php echo FILE_BUYING_PHP; ?>">Buying</a></li> 
+                        <?php
+                            //This code will redirect the user to the register or update page from the navbar if he already exist or if he is a new user
+                            if($username == "")
+                            {
+                        ?>
+                                <li><a href="<?php echo FILE_REGISTER; ?>">Register/Update</a></li> 
+                        <?php
+                            }
+                            else
+                            {
+                        ?>
+                                <li><a href="<?php echo FILE_UPDATE; ?>">Register/Update</a></li> 
+                        <?php
+                            }
+                        ?>
                     </ul>                  
                 </nav>
                 <br><br>
@@ -187,6 +329,7 @@ function createFootContainer()
     //Goal:
     //Function to close the container for body content.
     ?>
+            
         </div>
     <?php
 }
@@ -593,32 +736,43 @@ function createForm()
     }
     
     function loginForm($title)
-    {   $username == "";
+    {   
+        global $username;
+        global $password;
+        global $errorUsername;
+        global $errorPassword;
+        global $errorGeneral;
+        global $LoginMessage;
+        //$username = "Matheus";
         if($username == "")
         {
             ?>
                 <div class = "login">
-                    <form action="<?php echo $title; ?>.php" method="POST" class="form">
-                        <p>
+                    <form action="<?php echo $title; ?>" method="POST" class="form">
                             <label for="username"> Username: </label>
-                            <input type="text" name="username" placeholder="matheusemidio" value="<?php //echo($errorGeneral == "")? "":$product_code; ?>"/>
+                            <input type="text" name="username" placeholder="matheusemidio" value="<?php echo($errorGeneral == "")? "":$username; ?>"/>
                             <span class="errorMessage">
                                 <?php 
-                                    //echo $errorProductCode;
+                                    echo $errorUsername;
                                 ?>
                             </span>                    
                             <br>
-                            <label for="password"> Password: </label>
-                            <input type="text" name="password" placeholder="password" value="<?php //echo($errorGeneral == "")? "":$product_code; ?>"/>
+                            <label  for="password"> Password: </label>
+                            <input type="text" name="password" placeholder="password" value="<?php echo($errorGeneral == "")? "":$password; ?>"/>
                             <span class="errorMessage">
                                 <?php 
-                                    //echo $errorProductCode;
+                                    echo $errorPassword;
                                 ?>
                             </span>                    
+                             <span class="errorMessage">
+                                <?php 
+                                    echo $LoginMessage;
+                                ?>
+                            </span> 
                             <br>
-                            
                             <input type="submit" value="Login" name="login" class="button" />
-                        </p>
+                            <span>Need a user account? <a href="<?php echo FILE_REGISTER; ?>">Register</a> </span>
+                            
                     </form>
                 </div>    
             <?php
@@ -631,14 +785,18 @@ function createForm()
             <?php        
             //User is logged in
 //----------Still needs to Load
-            echo "Welcome " . $firstName . " " . $lastName;
+            $customer = new customer();
+            $customer->load($username);
+            
+            echo "Welcome " . $customer->getFirstName() . " " . $customer->getLastName();
             
             //Loggout part
             ?>
-                <form action ="<?php echo $title; ?>.php" method="POST" class="form" >
+                <?php //echo "Welcome " . $username; ?>                    
+                <form action ="<?php echo $title; ?>" method="POST" class="form" >
                     <br>
+                    
                     <input type="submit" value="Logout" name="logout" class="button" />
-                    <span>Need a user account? <a href="<?php echo FILE_REGISTER; ?>">Register</a> </span>
     
                 </form>
             <?php
@@ -652,11 +810,10 @@ function createForm()
     function register()
     {
         global $firstname;
-        $firstname = "";
         global $lastname;
-        $lastname = "";
         global $address;
         global $city;
+        global $province;
         global $postalCode;
         global $username;
         global $password;
@@ -664,66 +821,86 @@ function createForm()
         global $errorLastName;
         global $errorAddress;
         global $errorCity;
+        global $errorProvince;
         global $errorPostalCode;
         global $errorUsername;
         global $errorPassword;
+        global $currentPage;
+        global $errorGeneral;
         ?>
             <div>
                 <br>
         <?php  
         
         ?>
-            <form action="action" method="POST">
-                <label class="required" for="firstName"> First Name: </label>
-                <input type="text" name="firstName" placeholder="Matheus" value="<?php echo($errorGeneral == "")? "":$firstName; ?>"/>
+                <h1 class="header">Register</h1>
+                <form action="<?php echo FILE_UPDATE; ?>" method="POST" class="form">
+                <label for="firstName"> First Name: </label>
+                <input type="text" name="firstName" placeholder="Matheus" value="<?php echo($errorGeneral == "")? "":$firstName; ?>" />
+                <label class="required"></label>
                 <span class="errorMessage">
                     <?php 
                         echo $errorFirstName;
                     ?>
                 </span>                    
                 <br>
-                <label class="required" for="lastName"> Product Code: </label>
+                <label for="lastName"> Last Name: </label>
                 <input type="text" name="lastName" placeholder="Cadena" value="<?php echo($errorGeneral == "")? "":$lastname; ?>"/>
+                <label class="required"></label>
                 <span class="errorMessage">
                     <?php 
                         echo $errorLastName;
                     ?>
                 </span>                    
                 <br>
-                <label class="required" for="address"> Product Code: </label>
+                <label for="address"> Address: </label>
                 <input type="text" name="address" placeholder="5178" value="<?php echo($errorGeneral == "")? "":$address; ?>"/>
+                <label class="required"></label>
                 <span class="errorMessage">
                     <?php 
                         echo $errorAddress;
                     ?>
                 </span>                    
                 <br>
-                <label class="required" for="city"> Product Code: </label>
+                <label for="city"> City: </label>
                 <input type="text" name="city" placeholder="Montréal" value="<?php echo($errorGeneral == "")? "":$city; ?>"/>
+                <label class="required"></label>
                 <span class="errorMessage">
                     <?php 
                         echo $errorCity;
                     ?>
-                </span>                    
+                </span>  
                 <br>
-                <label class="required" for="postalCode"> Product Code: </label>
-                <input type="text" name="postalcode" placeholder="H1X 2N9" value="<?php echo($errorGeneral == "")? "":$postalCode; ?>"/>
+                <label for="province"> Province: </label>
+                <input type="text" name="province" placeholder="Quebec" value="<?php echo($errorGeneral == "")? "": $province; ?>"/>
+                <label class="required"></label>
+                <span class="errorMessage">
+                    <?php 
+                        echo $errorProvince;
+                    ?>
+                </span>    
+                <br>
+                <label for="postalCode"> Postal Code: </label>
+                <input type="text" name="postalCode" placeholder="H1X 2N9" value="<?php echo($errorGeneral == "")? "":$postalCode; ?>"/>
+                <label class="required"></label>
                 <span class="errorMessage">
                     <?php 
                         echo $errorPostalCode;
                     ?>
                 </span>                    
                 <br>
-                <label class="required" for="username"> Product Code: </label>
+                <label for="username"> Username: </label>
                 <input type="text" name="username" placeholder="matheusemidio" value="<?php echo($errorGeneral == "")? "":$username; ?>"/>
+                <label class="required"></label>
                 <span class="errorMessage">
                     <?php 
                         echo $errorUsername;
                     ?>
                 </span>                    
                 <br>
-                <label class="required" for="password"> Product Code: </label>
-                <input type="text" name="password" placeholder="123456" value="<?php echo($errorGeneral == "")? "":$password; ?>"/>
+                <label for="password"> Password: </label>
+                <input type="password" name="password" value="<?php echo($errorGeneral == "")? "":$password; ?>"/>
+                <label class="required"></label>
                 <span class="errorMessage">
                     <?php 
                         echo $errorPassword;
@@ -737,3 +914,141 @@ function createForm()
             </div>
         <?php  
     }
+    
+    function updateAccount()
+    {
+        global $firstname;
+        global $lastname;
+        global $address;
+        global $city;
+        global $province;
+        global $postalCode;
+        global $username;
+        global $password;
+        global $errorFirstName;
+        global $errorLastName;
+        global $errorAddress;
+        global $errorCity;
+        global $errorProvince;
+        global $errorPostalCode;
+        global $errorUsername;
+        global $errorPassword;
+        global $currentPage;
+        global $errorGeneral;
+        
+        //Loading the current logged customer to display his info on the text fields
+        $customer = new customer();
+        $customer->load($username);
+        $firstname = $customer->getFirstName();
+        $lastname = $customer->getLastName();
+        $address = $customer->getAddress();
+        $city = $customer->getCity();
+        $province = $customer->getProvince();
+        $postalCode = $customer->getPostalCode();
+        
+        
+        
+        ?>
+            <div>
+                <br>
+        <?php  
+        
+        ?>
+                <h1 class="header">Manage Account</h1>
+                <form action="<?php echo FILE_UPDATE; ?>" method="POST" class="form">
+                <label for="firstName"> First Name: </label>
+                <input type="text" name="firstName" placeholder="Matheus" value="<?php echo $firstname; ?>" />
+                <label class="required"></label>
+                <span class="errorMessage">
+                    <?php 
+                        echo $errorFirstName;
+                    ?>
+                </span>                    
+                <br>
+                <label for="lastName"> Last Name: </label>
+                <input type="text" name="lastName" placeholder="Cadena" value="<?php echo $lastname; ?>"/>
+                <label class="required"></label>
+                <span class="errorMessage">
+                    <?php 
+                        echo $errorLastName;
+                    ?>
+                </span>                    
+                <br>
+                <label for="address"> Address: </label>
+                <input type="text" name="address" placeholder="5178" value="<?php echo $address; ?>"/>
+                <label class="required"></label>
+                <span class="errorMessage">
+                    <?php 
+                        echo $errorAddress;
+                    ?>
+                </span>                    
+                <br>
+                <label for="city"> City: </label>
+                <input type="text" name="city" placeholder="Montréal" value="<?php echo $city; ?>"/>
+                <label class="required"></label>
+                <span class="errorMessage">
+                    <?php 
+                        echo $errorCity;
+                    ?>
+                </span>  
+                <br>
+                <label for="province"> Province: </label>
+                <input type="text" name="province" placeholder="Quebec" value="<?php echo $province; ?>"/>
+                <label class="required"></label>
+                <span class="errorMessage">
+                    <?php 
+                        echo $errorProvince;
+                    ?>
+                </span>    
+                <br>
+                <label for="postalCode"> Postal Code: </label>
+                <input type="text" name="postalCode" placeholder="H1X 2N9" value="<?php echo $postalCode; ?>"/>
+                <label class="required"></label>
+                <span class="errorMessage">
+                    <?php 
+                        echo $errorPostalCode;
+                    ?>
+                </span>                    
+                <br>
+                <label for="username"> Username: </label>
+                <input type="text" name="username" placeholder="matheusemidio" value="<?php echo $username; ?>"/>
+                <label class="required"></label>
+                <span class="errorMessage">
+                    <?php 
+                        echo $errorUsername;
+                    ?>
+                </span>                    
+                <br>
+                <label for="password"> Password: </label>
+                <input type="password" name="password" value="<?php echo $password; ?>"/>
+                <label class="required"></label>
+                <span class="errorMessage">
+                    <?php 
+                        echo $errorPassword;
+                    ?>
+                </span>                    
+                <br>
+                <input type="submit" value="Update" name="update" class="button" />
+            </form>
+        <?php
+        ?>
+            </div>
+        <?php          
+    }
+    /*
+    function registerOrupdate()
+    {
+        global $username;
+        
+        if($username == "")
+        {
+            register("register.php");
+        }
+        else
+        {
+            updateAccount($username);
+        }
+
+    }
+    */
+    

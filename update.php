@@ -14,14 +14,13 @@ require_once FILE_PHP_FUNCTIONS;
 
 
 //Beginning of the HTML 
-generateHeader("Register");
+generateHeader("Update");
 
     //Calling and writing space
         //loginForm("index");
         $customer = new customer();
 
-
-        if(isset($_POST["register"]))
+        if(isset($_POST["update"]))
         {
             //Getting input from the user
             $firstname = htmlspecialchars(trim($_POST["firstName"]));
@@ -80,12 +79,14 @@ generateHeader("Register");
             if(($errorFirstName == "") && ($errorLastName == "") && ($errorProductCode == "") && ($errorCity == "") && ($errorPostalCode == "") && ($errorUsername == "") && ($errorPassword == ""))
             {
                 $errorGeneral = "";
-                $customer->save();
+                $customer->update();
+                echo "<br>Customer was updated successfully!!";
+
             }
             
             
         }
-        register();
+        updateAccount();
         
         //Function that will call the register or update function, depending if the user is logged in or not
         //registerOrupdate();

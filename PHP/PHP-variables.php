@@ -9,6 +9,8 @@
 #Matheus Emidio (1931358) 2021-03-13 Added variables required for the errors and exceptions and for the parameters for subtotal colors
 #Matheus Emidio (1931358) 2021-04-24 Added variables required for the Database, connection, objects folders and login feature
 
+
+
 //  CSS Variables
 define("FOLDER_CSS_STYLESHEET", "CSS/");
 define("FILE_CSS_STYLESHEET", FOLDER_CSS_STYLESHEET. "styles.css");
@@ -18,6 +20,7 @@ define("FILE_BUYING_PHP", "buying.php");
 define("FILE_INDEX_PHP", "index.php");
 define("FILE_ORDERS_PHP", "orders.php");
 define("FILE_REGISTER", "register.php");
+define("FILE_UPDATE", "update.php");
 
 //  IMG Variables
 define("FOLDER_IMG", "IMG/");
@@ -47,7 +50,7 @@ define("FILE_CONNECTION", FOLDER_DATABASE . "connection.php");
 //objects 
 define("FOLDER_OBJECTS", "objects/");
 define("FILE_CUSTOMER", FOLDER_OBJECTS . "customer.php");
-define("FILE_CUSTOMERS", FOLDER_OBJECTS . "customer.php");
+define("FILE_CUSTOMERS", FOLDER_OBJECTS . "customers.php");
 define("FILE_PRODUCT", FOLDER_OBJECTS . "product.php");
 define("FILE_PRODUCTS", FOLDER_OBJECTS . "products.php");
 define("FILE_PURCHASE", FOLDER_OBJECTS . "purchase.php");
@@ -59,6 +62,9 @@ define("DATABASE", "dbname=database-1931358");
 define("DATABASE_USERNAME", "user-1931358");
 define("DATABASE_PASSWORD", "1931358");
 
+//Headers
+$currentPage = "";
+$username = "";
 
 
  //Variable with the company short explanation
@@ -106,8 +112,12 @@ define("PRODUCT_CODE_REQUIRED_INITIAL_CHAR", "P");
 
 define("FIRST_NAME_MAX_LENGTH", 20);
 define("LAST_NAME_MAX_LENGTH", 20);
-
-define("CITY_MAX_LENGTH", 8);
+define("ADDRESS_MAX", 25);
+define("CITY_MAX_LENGTH", 25);
+define("PROVINCE_MAX", 25);
+define("POSTAL_CODE_MAX", 7);
+define("USERNAME_MAX", 12);
+define("PASSWORD_MAX", 255);
 
 define("COMMENT_MIN_LENGTH", 0);
 define("COMMENT_MAX_LENGTH", 200);
@@ -145,16 +155,18 @@ $errorGeneral = "";
 
 $address = "";
 $city = "";
+$province = "";
 $postalCode = "";
 $username = "";
 $password = "";
 
 $errorAddress = "";
 $errorCity = "";
+$errorProvince = "";
 $errorPostalCode = "";
 $errorUsername = "";
 $errorPassword = "";
-
+$LoginMessage = "";
 
 //Declaration of variables that will be displayed on orders page
 $subtotal = 0;
@@ -191,3 +203,5 @@ $array_client_output = array(
 //Color Function variables
 define("COLOR_MIN_PARAMETER", 100);
 define("COLOR_MAX_PARAMETER", 1000);
+
+

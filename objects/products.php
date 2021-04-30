@@ -24,10 +24,16 @@ class products extends collection
         #$PDOStatement->bindParam(":year", $year);
         
         $PDOStatement->execute();     
-        
+        echo "Im here file";
         #check if you loaded something
         while($row = $PDOStatement->fetch())
         {
+            echo "Im here";
+            //echo $row["product_id"];
+            //echo $row["product_code"];
+            //echo $row["product_description"];
+            //echo $row["product_price"];
+            //echo $row["product_cost"];
             $product = new product($row["product_id"], $row["product_code"], $row["product_description"], $row["product_price"], $row["product_cost"]);
             $this->add($row['product_id'], $product);
             

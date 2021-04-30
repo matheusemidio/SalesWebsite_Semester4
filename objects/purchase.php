@@ -66,4 +66,12 @@ class purchase
     {
         
     }
+    public function load()
+    {
+        
+    }
+    public function save()
+    {
+        
+    }
 }

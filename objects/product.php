@@ -15,6 +15,13 @@ class product
     
     function __construct($newProduct_id = "", $newProduct_code = "", $newProduct_description = "",$newProduct_price = "",$newProduct_cost = "")
     {
+        
+        echo "Im on the constructor";
+        $this->product_id = $newProduct_id;
+        $this->product_code = $newProduct_code;
+        $this->product_description = $newProduct_description;
+        $this->product_price = $newProduct_price;
+        $this->product_cost = $newProduct_cost;
         if($newProduct_id != "")
         {
             
@@ -62,7 +69,7 @@ class product
     //Setters
     public function setId($newPrduct_id)
     {
-        
+        $this->product_id = $newPrduct_id;
     }
     public function setCode($newPrduct_code)
     {
@@ -95,7 +102,7 @@ class product
                 //Successful passed the validation
                 else
                 {
-                    $errorProductCode = "";
+                    #$errorProductCode = "";
                     return True;
                 }
             }
@@ -111,6 +118,14 @@ class product
         
     }
     public function setCost($newPrduct_cost)
+    {
+        
+    }
+    public function load()
+    {
+        
+    }
+    public function save()
     {
         
     }

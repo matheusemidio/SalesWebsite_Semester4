@@ -17,9 +17,14 @@ require_once FILE_PHP_FUNCTIONS;
 generateHeader("Orders");
 
     //Calling and writing space
+    //loginForm("orders");
     readClientInput();
     generateTable();
-    //loginForm("orders");
+    require_once FILE_PRODUCTS;
+    require_once FILE_CONNECTION;
+    $products = new products();
+    
+    echo "<span> " . $products->count() . "</span>";
 
 //End of the HTML
 generateFooter();

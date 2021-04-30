@@ -10,6 +10,8 @@ class customers extends collection
 {
     function __construct()
     {
+        //echo "Im here";
+
         global $connection;
         
         #use a stored procedure
@@ -26,6 +28,7 @@ class customers extends collection
         #check if you loaded something
         while($row = $PDOStatement->fetch())
         {
+            //echo "<br>im on the customers constructor</br>";
             $customer = new customer($row["customer_id"], $row["customer_firstName"], $row["customer_lastName"], $row["customer_address"], $row["customer_city"], 
                     $row["customer_province"], $row["customer_postalCode"], $row["customer_username"], $row["customer_password"]);
             $this->add($row['customer_id'], $customer);
