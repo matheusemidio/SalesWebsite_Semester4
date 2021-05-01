@@ -12,6 +12,8 @@ class products extends collection
 {
     function __construct()
     {
+        //echo "Im on the products contructor<br>";
+
         global $connection;
         
         #use a stored procedure
@@ -24,11 +26,10 @@ class products extends collection
         #$PDOStatement->bindParam(":year", $year);
         
         $PDOStatement->execute();     
-        echo "Im here file";
+        //echo "Im here file";
         #check if you loaded something
         while($row = $PDOStatement->fetch())
         {
-            echo "Im here";
             //echo $row["product_id"];
             //echo $row["product_code"];
             //echo $row["product_description"];

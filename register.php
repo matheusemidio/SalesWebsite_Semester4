@@ -22,6 +22,7 @@ generateHeader("Register");
         //global $registerMessage;
         //echo "Im here -1";
         //echo $registerMessage;
+        
         if(isset($_POST["register"]))
         
         {

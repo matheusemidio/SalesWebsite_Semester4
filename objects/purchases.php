@@ -28,7 +28,7 @@ class purchases extends collection
         while($row = $PDOStatement->fetch())
         {
             $purchase = new purchase($row["purchase_id"], $row["fk_customer_id"], $row["fk_product_id"], $row["purchase_quantity"], $row["purchase_price"],
-                    $row["purchase_comment"]);
+                    $row["purchase_comment"], $row["purchase_subtotal"], $row["purchase_taxesAmount"], $row["purchase_grandtotal"]);
             $this->add($row['purchase_id'], $purchase);
             
         }     

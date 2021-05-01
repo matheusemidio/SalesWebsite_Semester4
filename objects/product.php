@@ -2,6 +2,7 @@
 #Revision History
 #Matheus Emidio (1931358) 2021-04-24 Created product class
 #Matheus Emidio (1931358) 2021-04-30 Fixed problem with setters and constructor, created load, save, update and delete functions
+#Matheus Emidio (1931358) 2021-04-30 Added the customer_id to load
 
 require_once FILE_CONNECTION;
 
@@ -147,7 +148,7 @@ class product
                     //Successful passed the validation
                     else
                     {
-                        $this->product_price = number_format($newProduct_cost, PRICE_PRECISION);                                                
+                        $this->product_price = number_format($newProduct_price, PRICE_PRECISION);                                                
                         return "";
 
                     }
@@ -246,13 +247,20 @@ class product
         #set_error_handler
         #set_exception_handler
         #call the stored procedure
-        $SQLQuery = "UPDATE products SET "
-                                . "product_code = :product_code, "
-                                . "product_description = :product_description, "
-                                . "product_price = :product_price, "
-                                . "product_cost = :product_cost, "                  
-                .               " WHERE product_id = :product_id;";
+        //$SQLQuery = "UPDATE products SET "
+        //                        . "product_code = :product_code, "
+        //                        . "product_description = :product_description, "
+        //                        . "product_price = :product_price, "
+        //                        . "product_cost = :product_cost, "                  
+        //        .               " WHERE product_id = :product_id;";
+        $SQLQuery = "CALL products_update("
+                                        . ":product_id,"
+                                        . ":product_code,"
+                                        . ":product_description,"
+                                        . ":product_price,"
+                                        . ":product_cost);";
         $PDOStatement = $connection->prepare($SQLQuery);
+        $PDOStatement->bindParam(":product_id", $this->product_id);
         $PDOStatement->bindParam(":product_code", $this->product_code);
         $PDOStatement->bindParam(":product_description", $this->product_description);
         $PDOStatement->bindParam(":product_price", $this->product_price);
@@ -270,8 +278,10 @@ class product
         #set_error_handler
         #set_exception_handler
         #call the stored procedure
-        $SQLQuery = "DELETE FROM products "                
-                .               " WHERE product_id = :product_id;";
+        //$SQLQuery = "DELETE FROM products "                
+        //        .               " WHERE product_id = :product_id;";
+        $SQLQuery = "CALL products_delete("
+                                        . ":product_id);";
         $PDOStatement = $connection->prepare($SQLQuery);
         $PDOStatement->bindParam(":product_id", $this->product_id);            
         $PDOStatement->execute();        

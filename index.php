@@ -27,26 +27,26 @@ generateHeader("Home");
 
 
 
-      foreach ($customers->items as $Acustomer)
-      {
-          echo $Acustomer->getId();
-          if($customer->getUsername() == $Acustomer->getUsername())
-          {
-               echo "<br>Same customer </br>";
-              //Check password
-              if($customer->getPassword() == $Acustomer->getPassword())
-              {
-                  echo "<br>Same password </br>";
-                  echo $customer->getPassword();
-                  echo $Acustomer->getPassword();
-              }
-              else{
-                    echo "<br>Wrong password </br>";
-                    echo $customer->getPassword();
-                    echo $Acustomer->getPassword();
-              }
-          }
-      }
+      //foreach ($customers->items as $Acustomer)
+      //{
+      //    echo $Acustomer->getId();
+      //    if($customer->getUsername() == $Acustomer->getUsername())
+      //    {
+      //         echo "<br>Same customer </br>";
+      //        //Check password
+      //        if($customer->getPassword() == $Acustomer->getPassword())
+      //        {
+      //            echo "<br>Same password </br>";
+      //            echo $customer->getPassword();
+      //            echo $Acustomer->getPassword();
+      //        }
+      //        else{
+      //              echo "<br>Wrong password </br>";
+      //              echo $customer->getPassword();
+      //              echo $Acustomer->getPassword();
+      //        }
+      //    }
+      //}
       
     //End of writing space
 

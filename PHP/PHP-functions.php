@@ -14,6 +14,7 @@
 #Matheus Emidio (1931358) 2021-04-26 Moved login to navbar
 #                                    Added code to force redirect user to safe url
 #Matheus Emidio (1931358) 2021-04-30 Fixed register function and manage customer
+#                                    Worked on the buy form
 
 
 #Forcing user to be redirected to safe url
@@ -133,8 +134,9 @@ function generateHeader($title)
        //$sessionPassword = trim($_POST["password"]);
        $customer = new customer();
        $LoginMessage = $customer->checkPassword($username, $password);
-       //$LoginMessage = $customer->checkPassword($sessionUsername, $sessionPassword);
+       $LoginMessage = $customer->checkPassword($sessionUsername, $sessionPassword);
        //$LoginMessage = "";
+       
        if($LoginMessage == "")
        {
             //echo "Creating cookie";
@@ -304,19 +306,13 @@ function createNavigationMenu()
                         <li><a href="<?php echo FILE_BUYING_PHP; ?>">Buying</a></li> 
                         
                         <?php
-                            //This code will redirect the user to the register or update page from the navbar if he already exist or if he is a new user
-                            if($username == "")
-                            {
+                        //Register page will be only accessable from the bottom of login form. This navbar item is only seen by logged users.
+                        if(isset($_SESSION["username"]))                            
+                        {
                         ?>
-                                <li><a href="<?php echo FILE_REGISTER; ?>">Account</a></li> 
+                            <li><a href="<?php echo FILE_UPDATE; ?>">Account</a></li> 
                         <?php
-                            }
-                            else
-                            {
-                        ?>
-                                <li><a href="<?php echo FILE_UPDATE; ?>">Account</a></li> 
-                        <?php
-                            }
+                        }
                         ?>
                     </ul>                  
                 </nav>
@@ -1068,6 +1064,7 @@ function createForm()
         global $errorComment;
         global $quantity;
         global $errorQuantity;
+        global $errorGeneral;
         
         $products = new products();
         ?>
@@ -1075,16 +1072,19 @@ function createForm()
         <form action="buying.php" method="post" class="form">
             <label for="productCode"> Product Code: </label>
         <?php
-            echo "<br><select name = 'productCode'>";
+            echo "<select name = 'product_id'>";
             foreach ($products->items as $product)
             {
                 #var_dump($car);
-                echo "<option value = '". $product->getCode() . "'></option>";
+                echo "<option value = '". $product->getId() . "'>". $product->getCode() ." - ".$product->getDescription() ." (" .$product->getPrice() . "$)</option>";
             }
             echo "</select>";
         ?>
+            <label class="required"></label>
+
+        <br>
             <label for="comment"> Comment: </label>
-            <input type="text" name="comment" placeholder="Comment" value="<?php echo $comment; ?>"/>
+            <input type="text" name="comment" placeholder="Comment" value="<?php echo($errorGeneral == "")? "":$comment; ?>"/>
             <span class="errorMessage">
                 <?php 
                     echo $errorComment;
@@ -1092,7 +1092,7 @@ function createForm()
             </span>
             <br>
             <label for="quantity"> Quantity: </label>
-            <input type="text" name="quantity" value="<?php echo $quantity; ?>"/>
+            <input type="text" name="quantity" value="<?php echo($errorGeneral == "")? "":$quantity; ?>"/>
             <label class="required"></label>
             <span class="errorMessage">
                 <?php 
@@ -1100,7 +1100,7 @@ function createForm()
                 ?>
             </span>  
             <br>            
-            <input type="submit" name="buy" value="Buy" />
+            <input type="submit" name="buy" value="Buy" class="button"/>
         </form>    
     
         <?php

@@ -8,6 +8,8 @@
 #Matheus Emidio (1931358) 2021-03-10 Corrected mistake on array_client_input, added another support array and necessary support variables to handle existing bugs on the validation.
 #Matheus Emidio (1931358) 2021-03-13 Added variables required for the errors and exceptions and for the parameters for subtotal colors
 #Matheus Emidio (1931358) 2021-04-24 Added variables required for the Database, connection, objects folders and login feature
+#Matheus Emidio (1931358) 2021-04-30 Added variables required for purchases
+#                                    Changed tax rate
 
 
 
@@ -127,9 +129,9 @@ define("PRICE_MIN", 0);
 define("PRICE_MAX", 10000);
 
 define("QUANTITY_MIN", 1);
-define("QUANTITY_MAX", 999);
+define("QUANTITY_MAX", 99);
 
-define("LOCAL_TAXES", (12.05/100));
+define("LOCAL_TAXES", (15.20/100));
 define("GRAND_TOTAL_PRECISION", 2);
 define("SUBTOTAL_PRECISION", 2);
 define("TAXES_PRECISION", 2);
@@ -176,6 +178,9 @@ $registerMessage = "";
 $subtotal = 0;
 $taxesAmout = 0;
 $grandTotal = 0;
+$errorSubtotal = "";
+$errorTaxesAmount = "";
+$errorGrandtotal = "";
 
 //Declaration of arrays to be used in the text file interaction.
 $array_client_input = array(

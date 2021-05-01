@@ -344,6 +344,7 @@ class customer
         if($row = $PDOStatement->fetch())
         {
             #since it comes from the database, we can trust the information is already validated
+            $this->customer_id = $row["customer_id"];
             $this->customer_firstName = $row['customer_firstName'];
             $this->customer_lastName = $row['customer_lastName'];
             $this->customer_address = $row['customer_address'];
@@ -448,16 +449,25 @@ class customer
             #set_error_handler
             #set_exception_handler
             #call the stored procedure
-            $SQLQuery = "UPDATE customers SET "
-                                    . "customer_firstName = :customer_firstName, "
-                                    . "customer_lastName = :customer_lastName, "
-                                    . "customer_address = :customer_address, "
-                                    . "customer_city = :customer_city, "
-                                    . "customer_province = :customer_province, "
-                                    . "customer_postalCode = :customer_postalCode, "
-                                    . "customer_username = :customer_username, "
-                                    . "customer_password = :customer_password "                   
-                    .               " WHERE customer_username = :customer_username;";
+            //$SQLQuery = "UPDATE customers SET "
+            //                        . "customer_firstName = :customer_firstName, "
+            //                        . "customer_lastName = :customer_lastName, "
+            //                        . "customer_address = :customer_address, "
+            //                        . "customer_city = :customer_city, "
+            //                        . "customer_province = :customer_province, "
+            //                        . "customer_postalCode = :customer_postalCode, "
+            //                        . "customer_username = :customer_username, "
+            //                        . "customer_password = :customer_password "                   
+            //        .               " WHERE customer_username = :customer_username;";
+            $SQLQuery = "CALL customers_update("
+                                            . ":customer_firstName,"
+                                            . ":customer_lastName,"
+                                            . ":customer_address,"
+                                            . ":customer_city,"
+                                            . ":customer_province,"
+                                            . ":customer_postalCode,"
+                                            . ":customer_username,"
+                                            . ":customer_password);";        
             $PDOStatement = $connection->prepare($SQLQuery);
             $PDOStatement->bindParam(":customer_firstName", $this->customer_firstName);
             $PDOStatement->bindParam(":customer_lastName", $this->customer_lastName);
@@ -483,8 +493,10 @@ class customer
             #set_error_handler
             #set_exception_handler
             #call the stored procedure
-            $SQLQuery = "DELETE FROM customers "                
-                    .               " WHERE customer_username = :customer_username;";
+            //$SQLQuery = "DELETE FROM customers "                
+            //        .               " WHERE customer_username = :customer_username;";
+            $SQLQuery = "CALL customers_delete("
+                                            . ":customer_username);";
             $PDOStatement = $connection->prepare($SQLQuery);
             $PDOStatement->bindParam(":customer_username", $this->customer_username);            
             $PDOStatement->execute(); 
