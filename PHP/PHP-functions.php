@@ -47,14 +47,16 @@ function generateHeader($title)
     //----------------------------------------------------
     #global variable    
     global $username;
-    global $currentPage;
-    $currrentPage = substr($_SERVER["SCRIPT_NAME"],strrpos($_SERVER["SCRIPT_NAME"],"/")+1);
-    
+    //global $currentPage;
+    //$currrentPage = substr($_SERVER["SCRIPT_NAME"],strrpos($_SERVER["SCRIPT_NAME"],"/")+1);
+    //global $sessionUsername;
+    //$_SESSION["user"] = "123";
     function createCookie()
     {      
-        global $currentPage; 
+        //global $currentPage; 
         //$currrentPage = substr($_SERVER["SCRIPT_NAME"],strrpos($_SERVER["SCRIPT_NAME"],"/")+1);
-        if(isset($_POST["login"]))
+        if(isset($_POST["username"]))
+        //if(isset($_POST["username"]))
         {
             //create a cookie called firstname
             //The third parameter on setcookie is to tell when the cookie will expire. time() is equivalent to now. time() + 10 will expire after 10 seconds.
@@ -75,7 +77,7 @@ function generateHeader($title)
     } 
     function deleteCookie()
     {
-        global $currentPage;
+        //global $currentPage;
         //$currrentPage = substr($_SERVER["SCRIPT_NAME"],strrpos($_SERVER["SCRIPT_NAME"],"/")+1);
         
         //If I call the delete cookie, I am already sure that I received the form, so its not necessary to check it.
@@ -97,34 +99,50 @@ function generateHeader($title)
     function readCookie()
     {
         global $username;
-        //Checks if I have already a cookie
+        //global $sessionUsername;
+        ////Checks if I have already a cookie
         if(isset($_SESSION["username"]))
+        //if(isset($_POST["username"]))
         {
             $username = htmlspecialchars($_SESSION["username"]);
+            //$sessionUsername = htmlspecialchars($_SESSION["username"]);
             //This is to make sure the client will stay logged in if he is active.
             #setcookie("firstname", htmlspecialchars($_SESSION["firstname"]), time() + 10 , "" , "", false, true);            
         }
         else
         {
             $username = "";
+            //$sessionUsername = "";
         }
     }
+    
     //This is to make sure I dont send the header after the doctype
-   if(isset($_POST["login"]))
+    
+    if(isset($_POST["login"]))
     {    
+        //$_SESSION["user"] = "123";
+        //createCookie();
        #Login validation shoult go here
-       //global $username;
+       global $username;
+       //global $sessionUsername;
+       //global $sessionPassword;
        global $LoginMessage;
        $username = trim($_POST["username"]);
        $password = trim(($_POST["password"]));
+       //$sessionUsername = trim($_POST["username"]);
+       //$sessionPassword = trim($_POST["password"]);
        $customer = new customer();
        $LoginMessage = $customer->checkPassword($username, $password);
+       //$LoginMessage = $customer->checkPassword($sessionUsername, $sessionPassword);
+       //$LoginMessage = "";
        if($LoginMessage == "")
        {
+            //echo "Creating cookie";
             createCookie();
 
        }
        else{
+           //echo "Deleting cookie";
            deleteCookie();
        }
        
@@ -284,18 +302,19 @@ function createNavigationMenu()
                         <li><a href=" <?php echo FILE_INDEX_PHP; ?>">Home</a></li>                        
                         <li><a href="<?php echo FILE_ORDERS_PHP; ?>">Orders</a></li>
                         <li><a href="<?php echo FILE_BUYING_PHP; ?>">Buying</a></li> 
+                        
                         <?php
                             //This code will redirect the user to the register or update page from the navbar if he already exist or if he is a new user
                             if($username == "")
                             {
                         ?>
-                                <li><a href="<?php echo FILE_REGISTER; ?>">Register/Update</a></li> 
+                                <li><a href="<?php echo FILE_REGISTER; ?>">Account</a></li> 
                         <?php
                             }
                             else
                             {
                         ?>
-                                <li><a href="<?php echo FILE_UPDATE; ?>">Register/Update</a></li> 
+                                <li><a href="<?php echo FILE_UPDATE; ?>">Account</a></li> 
                         <?php
                             }
                         ?>
@@ -743,8 +762,10 @@ function createForm()
         global $errorPassword;
         global $errorGeneral;
         global $LoginMessage;
+        //global $sessionUsername;
         //$username = "Matheus";
-        if($username == "")
+        //if($username == "")
+        if(!isset($_SESSION["username"]))
         {
             ?>
                 <div class = "login">
@@ -786,10 +807,12 @@ function createForm()
             //User is logged in
 //----------Still needs to Load
             $customer = new customer();
-            $customer->load($username);
             
-            echo "Welcome " . $customer->getFirstName() . " " . $customer->getLastName();
-            
+            //$customer->load($username);
+            $customer->load(trim(htmlspecialchars($_SESSION["username"])));
+            //if(isset($_POST["login"])){
+                echo "Welcome " . $customer->getFirstName() . " " . $customer->getLastName();
+            //}
             //Loggout part
             ?>
                 <?php //echo "Welcome " . $username; ?>                    
@@ -834,9 +857,9 @@ function createForm()
         
         ?>
                 <h1 class="header">Register</h1>
-                <form action="<?php echo FILE_UPDATE; ?>" method="POST" class="form">
+                <form action="<?php echo FILE_REGISTER; ?>" method="POST" class="form">
                 <label for="firstName"> First Name: </label>
-                <input type="text" name="firstName" placeholder="Matheus" value="<?php echo($errorGeneral == "")? "":$firstName; ?>" />
+                <input type="text" name="firstNameForm" placeholder="Matheus" value="<?php echo($errorGeneral == "")? "":$firstName; ?>" />
                 <label class="required"></label>
                 <span class="errorMessage">
                     <?php 
@@ -845,7 +868,7 @@ function createForm()
                 </span>                    
                 <br>
                 <label for="lastName"> Last Name: </label>
-                <input type="text" name="lastName" placeholder="Cadena" value="<?php echo($errorGeneral == "")? "":$lastname; ?>"/>
+                <input type="text" name="lastNameForm" placeholder="Cadena" value="<?php echo($errorGeneral == "")? "":$lastname; ?>"/>
                 <label class="required"></label>
                 <span class="errorMessage">
                     <?php 
@@ -890,7 +913,7 @@ function createForm()
                 </span>                    
                 <br>
                 <label for="username"> Username: </label>
-                <input type="text" name="username" placeholder="matheusemidio" value="<?php echo($errorGeneral == "")? "":$username; ?>"/>
+                <input type="text" name="usernameForm" placeholder="matheusemidio" value="<?php echo($errorGeneral == "")? "":$username; ?>"/>
                 <label class="required"></label>
                 <span class="errorMessage">
                     <?php 
@@ -913,6 +936,9 @@ function createForm()
         ?>
             </div>
         <?php  
+        
+        
+
     }
     
     function updateAccount()
@@ -955,9 +981,9 @@ function createForm()
         
         ?>
                 <h1 class="header">Manage Account</h1>
-                <form action="<?php echo FILE_UPDATE; ?>" method="POST" class="form">
+            <form action="<?php echo FILE_UPDATE; ?>" method="POST" class="form">
                 <label for="firstName"> First Name: </label>
-                <input type="text" name="firstName" placeholder="Matheus" value="<?php echo $firstname; ?>" />
+                <input type="text" name="firstNameForm" placeholder="Matheus" value="<?php echo $firstname; ?>" />
                 <label class="required"></label>
                 <span class="errorMessage">
                     <?php 
@@ -966,7 +992,7 @@ function createForm()
                 </span>                    
                 <br>
                 <label for="lastName"> Last Name: </label>
-                <input type="text" name="lastName" placeholder="Cadena" value="<?php echo $lastname; ?>"/>
+                <input type="text" name="lastNameForm" placeholder="Cadena" value="<?php echo $lastname; ?>"/>
                 <label class="required"></label>
                 <span class="errorMessage">
                     <?php 
@@ -1011,7 +1037,7 @@ function createForm()
                 </span>                    
                 <br>
                 <label for="username"> Username: </label>
-                <input type="text" name="username" placeholder="matheusemidio" value="<?php echo $username; ?>"/>
+                <input type="text" name="usernameForm" placeholder="matheusemidio" value="<?php echo $username; ?>"/>
                 <label class="required"></label>
                 <span class="errorMessage">
                     <?php 
@@ -1034,6 +1060,50 @@ function createForm()
         ?>
             </div>
         <?php          
+    }
+    function buyForm()
+    {
+        global $product_code;
+        global $comment;
+        global $errorComment;
+        global $quantity;
+        global $errorQuantity;
+        
+        $products = new products();
+        ?>
+    
+        <form action="buying.php" method="post" class="form">
+            <label for="productCode"> Product Code: </label>
+        <?php
+            echo "<br><select name = 'productCode'>";
+            foreach ($products->items as $product)
+            {
+                #var_dump($car);
+                echo "<option value = '". $product->getCode() . "'></option>";
+            }
+            echo "</select>";
+        ?>
+            <label for="comment"> Comment: </label>
+            <input type="text" name="comment" placeholder="Comment" value="<?php echo $comment; ?>"/>
+            <span class="errorMessage">
+                <?php 
+                    echo $errorComment;
+                ?>
+            </span>
+            <br>
+            <label for="quantity"> Quantity: </label>
+            <input type="text" name="quantity" value="<?php echo $quantity; ?>"/>
+            <label class="required"></label>
+            <span class="errorMessage">
+                <?php 
+                    echo $errorQuantity;
+                ?>
+            </span>  
+            <br>            
+            <input type="submit" name="buy" value="Buy" />
+        </form>    
+    
+        <?php
     }
     /*
     function registerOrupdate()

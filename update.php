@@ -19,14 +19,14 @@ generateHeader("Update");
     //Calling and writing space
         //loginForm("index");
         $customer = new customer();
-
+       
         if(isset($_POST["update"]))
         {
             //Getting input from the user
-            $firstname = htmlspecialchars(trim($_POST["firstName"]));
+            $firstname = htmlspecialchars(trim($_POST["firstNameForm"]));
             $errorFirstName = "";
             
-            $lastname = htmlspecialchars(trim($_POST["lastName"]));
+            $lastname = htmlspecialchars(trim($_POST["lastNameForm"]));
             $errorLastName = "";
             
             $address = htmlspecialchars(trim($_POST["address"]));
@@ -41,7 +41,7 @@ generateHeader("Update");
             $postalCode = htmlspecialchars(trim($_POST["postalCode"]));
             $errorPostalCode = "";
             
-            $username = htmlspecialchars(trim($_POST["username"]));
+            $username = htmlspecialchars(trim($_POST["usernameForm"]));
             $errorUsername = "";
             
             $password = htmlspecialchars(trim($_POST["password"]));

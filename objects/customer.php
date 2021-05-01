@@ -1,7 +1,7 @@
 <?php
 #Revision History
 #Matheus Emidio (1931358) 2021-04-24 Created customer class
-#Matheus Emidio (1931358) 2021-04-30 Fixed problem with setters, created load and save functions
+#Matheus Emidio (1931358) 2021-04-30 Fixed problem with setters and constructor, created load and save functions
 #                         2021-04-30 Fixed probelm with parameters in queries                          
 #                         2021-04-30 Added and fixed problems with password hash                          
 
@@ -351,7 +351,8 @@ class customer
             $this->customer_province = $row['customer_province'];
             $this->customer_postalCode = $row['customer_postalCode'];            
             $this->customer_username = $row['customer_username'];
-            $this->customer_password = $row['customer_password'];            
+            $this->customer_password = $row['customer_password'];          
+            //echo "Im here3";
             return true;
         }
         
@@ -470,7 +471,24 @@ class customer
             
 
         //}
-    }   
+    }  
+    
+    function delete()
+    {
+        global $connection;
+        echo "Im on the customers ->delete()";
+
+        //else
+        //{
+            #set_error_handler
+            #set_exception_handler
+            #call the stored procedure
+            $SQLQuery = "DELETE FROM customers "                
+                    .               " WHERE customer_username = :customer_username;";
+            $PDOStatement = $connection->prepare($SQLQuery);
+            $PDOStatement->bindParam(":customer_username", $this->customer_username);            
+            $PDOStatement->execute(); 
+    }
     
     
     

@@ -19,15 +19,18 @@ generateHeader("Register");
     //Calling and writing space
         //loginForm("index");
         $customer = new customer();
-
-
+        //global $registerMessage;
+        //echo "Im here -1";
+        //echo $registerMessage;
         if(isset($_POST["register"]))
+        
         {
+            //echo "im here 0";
             //Getting input from the user
-            $firstname = htmlspecialchars(trim($_POST["firstName"]));
+            $firstname = htmlspecialchars(trim($_POST["firstNameForm"]));
             $errorFirstName = "";
             
-            $lastname = htmlspecialchars(trim($_POST["lastName"]));
+            $lastname = htmlspecialchars(trim($_POST["lastNameForm"]));
             $errorLastName = "";
             
             $address = htmlspecialchars(trim($_POST["address"]));
@@ -42,7 +45,7 @@ generateHeader("Register");
             $postalCode = htmlspecialchars(trim($_POST["postalCode"]));
             $errorPostalCode = "";
             
-            $username = htmlspecialchars(trim($_POST["username"]));
+            $username = htmlspecialchars(trim($_POST["usernameForm"]));
             $errorUsername = "";
             
             $password = htmlspecialchars(trim($_POST["password"]));
@@ -75,14 +78,37 @@ generateHeader("Register");
             $errorPassword = $customer->setPassword($encryptedPassword);
             //$customer->setPassword($password);
             
-            
+            //echo "Im here1";
 
             if(($errorFirstName == "") && ($errorLastName == "") && ($errorProductCode == "") && ($errorCity == "") && ($errorPostalCode == "") && ($errorUsername == "") && ($errorPassword == ""))
             {
+                //echo "Im here2";
                 $errorGeneral = "";
-                $customer->save();
+                //$customer->save();
+                
+                //Seeing if the username is unique and displaying a message before saving it
+                //Username is available
+                if($customer->load($username) == false)
+                {
+                    //Logging in
+                    $_SESSION["username"] = $username;
+                    $customer->save();
+                    
+                    //$registerMessage = "User was sucessfully created";
+                    header("Location: update.php");
+                    //die();
+                }
+                //Username already exists
+                else{
+                    echo "The username already exists. Please use a different one.";
+                    //header("Location: register.php");
+
+                    //$registerMessage = "";
+                }
+                
             }
             
+
             
         }
         register();

@@ -109,6 +109,7 @@ $array_products = array(
 //Variables for form 
 define("PRODUCT_CODE_MAX_LENGTH", 12);
 define("PRODUCT_CODE_REQUIRED_INITIAL_CHAR", "P");
+define("PRODUCT_DESCRIPTION_MAX_LENGTH", 100);
 
 define("FIRST_NAME_MAX_LENGTH", 20);
 define("LAST_NAME_MAX_LENGTH", 20);
@@ -126,13 +127,14 @@ define("PRICE_MIN", 0);
 define("PRICE_MAX", 10000);
 
 define("QUANTITY_MIN", 1);
-define("QUANTITY_MAX", 99);
+define("QUANTITY_MAX", 999);
 
 define("LOCAL_TAXES", (12.05/100));
 define("GRAND_TOTAL_PRECISION", 2);
 define("SUBTOTAL_PRECISION", 2);
 define("TAXES_PRECISION", 2);
 define("PRICE_PRECISION", 2);
+define("COST_PRECISION", 2);
 
 //Declaration of variables to be used in the user's input
 $product_code = "";
@@ -159,6 +161,8 @@ $province = "";
 $postalCode = "";
 $username = "";
 $password = "";
+$sessionUsername = "";
+$sessionPassword = "";
 
 $errorAddress = "";
 $errorCity = "";
@@ -167,7 +171,7 @@ $errorPostalCode = "";
 $errorUsername = "";
 $errorPassword = "";
 $LoginMessage = "";
-
+$registerMessage = "";
 //Declaration of variables that will be displayed on orders page
 $subtotal = 0;
 $taxesAmout = 0;
