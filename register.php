@@ -1,6 +1,8 @@
 <?php 
 #Revision History
 #Matheus Emidio (1931358) 2021-04-30 Create register page and worked on saving a customer
+#Matheus Emidio (1931358) 2021-05-02 This page will only be accessable by the login form. The user can register here as a new customer and after the information is verified to be valid
+#                                    the customer will already be logged in.
 
 
 

@@ -9,6 +9,8 @@ Matheus Emidio (1931358) 2021-03-10 Added style for table
 Matheus Emidio (1931358) 2021-03-13 Added style that will be called for by the commands on the URL
 #Matheus Emidio (1931358) 2021-04-24 Created login style 
 #Matheus Emidio (1931358) 2021-04-30 Create headers for register and update page
+#Matheus Emidio (1931358) 2021-05-03 Created style for search
+
 
 
 */
@@ -198,4 +200,17 @@ th
 {
     text-align: center;
     color: red;
+}
+.search
+{
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    margin: 0 auto;
+}
+.table
+{
+    border: 1px solid black;
 }

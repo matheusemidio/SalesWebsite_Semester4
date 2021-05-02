@@ -4,6 +4,7 @@
 #Matheus Emidio (1931358) 2021-04-30 Fixed problem with setters and constructor, created load, save, update and delete functions
 #Matheus Emidio (1931358) 2021-04-31 Added updated columns subtotal, taxes amount and grandtotal
 #                                    Added function calculate to set the results for subtotal, taxes and grand total
+#Matheus Emidio (1931358) 2021-05-02 Fixed constructor that was not setting the correct parameters for subtotal, taxes amount and grand total
 
 require_once FILE_CONNECTION;
 
@@ -20,6 +21,7 @@ class purchase
     private $purchase_taxesAmount = "";
     private $purchase_grandTotal = "";
     
+    //Construcotor
     function __construct($newPurchase_id = "", $newCustomer_id = "", $newProduct_id = "",$newPurchase_quantity = "",$newPurchase_price = "", $newPurchase_comment = "", $newPurchase_subtotal = "",
             $newPurchase_taxesAmount = "", $newPurchase_grandTotal = "")
     {
@@ -30,7 +32,10 @@ class purchase
         $this->setProductId($newProduct_id);
         $this->setQuantity($newPurchase_quantity);
         $this->setPrice($newPurchase_price);
-        $this->setComment($newPurchase_comment);  
+        $this->setComment($newPurchase_comment);
+        $this->setSubtotal($newPurchase_subtotal);
+        $this->setTaxesAmount($newPurchase_taxesAmount);
+        $this->setGrandtotal($newPurchase_grandTotal);
         
     }
     
@@ -72,7 +77,7 @@ class purchase
         return $this->purchase_grandTotal;
     }
     
-    //Setters
+    //Setters with validation
     public function setPurchaseId($newPurchase_id)
     {
         $this->purchase_id = $newPurchase_id;
@@ -88,20 +93,21 @@ class purchase
     public function setQuantity($newPurchase_quantity)
     {
         //Validating Quantity
-                    
-        //Checking if quantity is entirely numeric
-        if(!is_numeric($newPurchase_quantity))
+        
+        //Checking if price is empty
+        if($newPurchase_quantity == "")                    
         {
-            //$errorQuantity = "The quantity has to be numeric";
-            return "The quantity has to be numeric";
+            //$errorQuantity = "Please enter the quantity. It can not be empty.";
+            return "Please enter the quantity. It can not be empty.";
+            
         }
         else
         {
-            //Checking if price is empty
-            if($newPurchase_quantity == "")
+            //Checking if quantity is entirely numeric
+            if(!is_numeric($newPurchase_quantity))
             {
-                //$errorQuantity = "Please enter the quantity. It can not be empty.";
-                return "Please enter the quantity. It can not be empty.";
+                //$errorQuantity = "The quantity has to be numeric";
+                return "The quantity has to be numeric";                
             }
             else
             {
@@ -182,24 +188,24 @@ class purchase
     }
     public function setComment($newPurchase_comment)
     {
-        //Checking if product description is empty
-        if($newPurchase_comment == "")
+        //Checking if comment is empty
+        //if($newPurchase_comment == "")
+        //{
+        //    return "Please enter the purchase comment. It can not be empty.";
+        //}
+        //else
+        //{
+            //Checking if product description has more than the maximum predefined length
+        if(mb_strlen($newPurchase_comment) >  COMMENT_MAX_LENGTH)
         {
-            return "Please enter the purchase comment. It can not be empty.";
+            return "The purchase comment can not have more than " . PRODUCT_DESCRIPTION_MAX_LENGTH . " characters.";
         }
         else
         {
-            //Checking if product description has more than the maximum predefined length
-            if(mb_strlen($newPurchase_comment) >  COMMENT_MAX_LENGTH)
-            {
-                return "The purchase comment can not have more than " . PRODUCT_DESCRIPTION_MAX_LENGTH . " characters.";
-            }
-            else
-            {
-                $this->purchase_comment = $newPurchase_comment;
-                return "";
-            }
-        }        
+            $this->purchase_comment = $newPurchase_comment;
+            return "";
+        }
+        //}        
     }
     public function setSubtotal($newPurchase_subtotal)
     {
@@ -302,13 +308,14 @@ class purchase
     }
     public function load($p_purchase_id)
     {
+        //Function to select one row
         global $connection;
         //echo "Im on the purchases ->load()";
 
         #call the stored procedure
         $SQLQuery = "CALL purchases_select_one(:purchase_id);";
         $PDOStatement = $connection->prepare($SQLQuery);
-        $PDOStatement->bindParam(":product_id", $p_purchase_id);
+        $PDOStatement->bindParam(":purchase_id", $p_purchase_id);
         $PDOStatement->execute();
         
         #check if you loaded something
@@ -319,11 +326,11 @@ class purchase
             $this->customer_id = $row['fk_customer_id'];
             $this->product_id = $row['fk_product_id'];
             $this->purchase_quantity = $row["purchase_quantity"];
-            $this->purchase_price = $row['purchase_price']; 
+            $this->purchase_price = $row['product_price']; 
             $this->purchase_comment = $row['purchase_comment'];     
             $this->purchase_subtotal = $row["purchase_subtotal"];
             $this->purchase_taxesAmount = $row["purchase_taxesAmount"];
-            $this->purchase_grandTotal = $row["purchase_grandtotal"];
+            $this->purchase_grandTotal = $row["purchase_grandTotal"];
             return true;
         }
         
@@ -331,6 +338,8 @@ class purchase
     }
     public function save()
     {
+        //Function to insert on the database
+        
         global $connection;
         //echo "Im on the purchases ->save()";
 
@@ -363,6 +372,7 @@ class purchase
     }
         public function update()
     {
+        //Function to update a row from the database
         global $connection;
         echo "Im on the purchases ->update()";
 
@@ -403,6 +413,7 @@ class purchase
     }
     public function delete()
     {
+        //Function to delete one row from the database
         global $connection;
         echo "Im on the purchases ->delete()";
 
@@ -421,18 +432,61 @@ class purchase
     }
     public function calculate()
     {
-        echo "Im on the purchases ->calculate()";
+        //Goal
+        //This function was created to calculate the correct values for subtotal,taxes and grand total based on the defined constant of taxes
+        //echo "Im on the purchases ->calculate()";
 
         //$newSubtotal = 0;
         //$newTaxesAmount = 0;
         //$newGrandtotal = 0;
-        
+        if($this->purchase_quantity == "")
+        {
+            $this->purchase_quantity = intval(0);
+        }
         $this->purchase_subtotal = $this->purchase_price * $this->purchase_quantity;
         $this->purchase_taxesAmount = $this->purchase_subtotal * LOCAL_TAXES;
         $this->purchase_grandTotal = (floatval($this->purchase_subtotal)) + floatval($this->purchase_taxesAmount);
         
         
     }
+    
+    public function filterByDate()
+    {
+        //Function to filter one row by date
+        global $connection;
+        //echo "Im on the purchases ->filterByDate()";
+
+        //else
+        //{
+        #set_error_handler
+        #set_exception_handler
+        #call the stored procedure
+        
+        
+        $SQLQuery = "CALL purchases_filter_date("
+                                        . ":fk_customer_id,"
+                                        . ":fk_product_id,"
+                                        . ":purchase_quantity,"
+                                        . ":purchase_price,"
+                                        . ":purchase_comment,"
+                                        . ":purchase_subtotal,"
+                                        . ":purchase_taxesAmount,"
+                                        . ":purchase_grandtotal,"
+                                        . ":purchase_id);";
+        $PDOStatement = $connection->prepare($SQLQuery);
+        $PDOStatement->bindParam(":fk_customer_id", $this->customer_id);
+        $PDOStatement->bindParam(":fk_product_id", $this->product_id);
+        $PDOStatement->bindParam(":purchase_quantity", $this->purchase_quantity);
+        $PDOStatement->bindParam(":purchase_price", $this->purchase_price);
+        $PDOStatement->bindParam(":purchase_comment", $this->purchase_comment);
+        $PDOStatement->bindParam(":purchase_subtotal", $this->purchase_subtotal);
+        $PDOStatement->bindParam(":purchase_taxesAmount", $this->purchase_taxesAmount);
+        $PDOStatement->bindParam(":purchase_grandtotal", $this->purchase_grandtotal);
+        $PDOStatement->bindParam(":purchase_id", $this->purchase_id);        
+        $PDOStatement->execute();          
+    }
+    
+    
 
 }
 

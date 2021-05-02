@@ -76,7 +76,7 @@ class customer
         return $this->customer_password;
     }
     
-    //Setters
+    //Setters with validation
     public function setId($newId)
     {
         $this->customer_id = $newId;
@@ -332,6 +332,7 @@ class customer
     }
     public function load($p_username)
     {
+        //Function to load one row from the database
         global $connection;
         
         #call the stored procedure
@@ -361,52 +362,59 @@ class customer
     }
     public function checkPassword($p_username,$p_password)
     {
+        //Function to check if password match for a given user
         global $connection;
         global $LoginMessage;
-        echo "<br> I am on the check Password";
+        //echo "<br> I am on the check Password";
         //$encryptedPassword = password_hash($p_password, PASSWORD_DEFAULT);
-        
-        #call the stored procedure
-        $SQLQuery = "CALL customers_select_password(:customer_username);";
-        $PDOStatement = $connection->prepare($SQLQuery);
-        $PDOStatement->bindParam(":customer_username", $p_username);
-        $PDOStatement->execute();
-        
-        #check if you loaded something
-        if($row = $PDOStatement->fetch())
-        {
-            #since it comes from the database, we can trust the information is already validated
-            //$this->customer_firstName = $row['customer_firstName'];
-            //$this->customer_lastName = $row['customer_lastName'];
-            //$this->customer_address = $row['customer_address'];
-            //$this->customer_city = $row['customer_city'];
-            //$this->customer_province = $row['customer_province'];
-            //$this->customer_postalCode = $row['customer_postalCode'];            
-           // $this->customer_username = $row['customer_username'];
-            $this->customer_password = $row['customer_password'];
-            echo "<br>Password: " . $this->customer_password;
-            echo "<br>Encryption: " . $p_password;
-            #Customer exist and has the same password
-            if(password_verify($p_password, $this->customer_password))
+        //Check if the parameters passed are not empty
+        if($p_password != "" && $p_username != ""){
+            #call the stored procedure
+            $SQLQuery = "CALL customers_select_password(:customer_username);";
+            $PDOStatement = $connection->prepare($SQLQuery);
+            $PDOStatement->bindParam(":customer_username", $p_username);
+            $PDOStatement->execute();
+
+            #check if you loaded something
+            if($row = $PDOStatement->fetch())
             {
-                //$errorPassword = "";
-                //return true;
-                
-                return "";
-                
-            }
-            #Customer exist but has an incorret password
-            else
-            {
-                //$errorPassword = "Username and password do not exist or do not match.";
-                return "Username and password do not exist or do not match.";
+                #since it comes from the database, we can trust the information is already validated
+                //$this->customer_firstName = $row['customer_firstName'];
+                //$this->customer_lastName = $row['customer_lastName'];
+                //$this->customer_address = $row['customer_address'];
+                //$this->customer_city = $row['customer_city'];
+                //$this->customer_province = $row['customer_province'];
+                //$this->customer_postalCode = $row['customer_postalCode'];            
+               // $this->customer_username = $row['customer_username'];
+                $this->customer_password = $row['customer_password'];
+                echo "<br>Password: " . $this->customer_password;
+                echo "<br>Encryption: " . $p_password;
+                #Customer exist and has the same password
+                if(password_verify($p_password, $this->customer_password))
+                {
+                    //$errorPassword = "";
+                    //return true;
+
+                    return "";
+
+                }
+                #Customer exist but has an incorret password
+                else
+                {
+                    //$errorPassword = "Username and password do not exist or do not match.";
+                    return "Username and password do not exist or do not match.";
+                }
             }
         }
+        else
+        {
+            return "Username or password can not be empty";
+        }
         
-        return false;          
     }
     public function save()
     {
+        //Function to insert a row on the database
         global $connection;
         echo "Im on the customers ->save()";
         
@@ -441,6 +449,7 @@ class customer
     }
     function update()
     {
+        //Function to update one row from the database
         global $connection;
         echo "Im on the customers ->update()";
 
@@ -485,6 +494,7 @@ class customer
     
     function delete()
     {
+        //Function to delete one row from the database
         global $connection;
         echo "Im on the customers ->delete()";
 

@@ -15,10 +15,11 @@ class product
     private $product_price = "";
     private $product_cost = "";
     
+    //Constructor
     function __construct($newProduct_id = "", $newProduct_code = "", $newProduct_description = "",$newProduct_price = "",$newProduct_cost = "")
     {
         
-        echo "Im on the product constructor";
+        //echo "Im on the product constructor";
         $this->setId($newProduct_id);
         $this->setCode($newProduct_code);
         $this->setDescription($newProduct_description);
@@ -48,7 +49,7 @@ class product
         return $this->product_cost;
     }
     
-    //Setters
+    //Setters with validation
     public function setId($newProduct_id)
     {
         $this->product_id = $newProduct_id;
@@ -191,8 +192,9 @@ class product
     }
     public function load($p_product_id)
     {
+        //Function to select one row from the database
         global $connection;
-        echo "Im on the products ->load()";
+        //echo "Im on the products ->load()";
 
         #call the stored procedure
         $SQLQuery = "CALL products_select_one(:product_id);";
@@ -216,6 +218,7 @@ class product
     }
     public function save()
     {
+        //Function to insert one row on the database
         global $connection;
         echo "Im on the products ->save()";
 
@@ -239,6 +242,7 @@ class product
     }
     public function update()
     {
+        //Function to update one row from the database
         global $connection;
         echo "Im on the products ->update()";
 
@@ -270,6 +274,7 @@ class product
     }
     public function delete()
     {
+        //Function to delete one row from the database
         global $connection;
         echo "Im on the products ->delete()";
 
@@ -286,5 +291,25 @@ class product
         $PDOStatement->bindParam(":product_id", $this->product_id);            
         $PDOStatement->execute();        
     }
+    
+    public function selectCode($p_product_id)
+    {
+        //Function to select the code for a given product id
+        global $connection;
+        //echo "Im on the products ->selectCode()";
+
+        //else
+        //{
+        #set_error_handler
+        #set_exception_handler
+        #call the stored procedure
+        //$SQLQuery = "DELETE FROM products "                
+        //        .               " WHERE product_id = :product_id;";
+        $SQLQuery = "CALL products_selectCode("
+                                        . ":product_id);";
+        $PDOStatement = $connection->prepare($SQLQuery);
+        $PDOStatement->bindParam(":product_id", $p_product_id);            
+        $PDOStatement->execute();        
+    }    
 
 }

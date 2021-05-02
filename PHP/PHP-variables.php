@@ -68,6 +68,10 @@ define("DATABASE_PASSWORD", "1931358");
 $currentPage = "";
 $username = "";
 
+//JavaScript
+define("FOLDER_JS", "JS/");
+define("FILE_SEARCH", FOLDER_JS . "search.js");
+define("FILE_SEARCH-DATES", "search-dates.php");
 
  //Variable with the company short explanation
  define("ABOUT_COMPANY", "Our company is called Paraiba Travel. It is based on the city of João Pessoa, in the state of Paraiba, Brazil. Here you can find many services related to tourim, but our specialty is to offer our clients boat rides in many destinations from our beautiful city.");
@@ -174,6 +178,7 @@ $errorUsername = "";
 $errorPassword = "";
 $LoginMessage = "";
 $registerMessage = "";
+
 //Declaration of variables that will be displayed on orders page
 $subtotal = 0;
 $taxesAmout = 0;
@@ -181,6 +186,8 @@ $grandTotal = 0;
 $errorSubtotal = "";
 $errorTaxesAmount = "";
 $errorGrandtotal = "";
+$date = "";
+$errorDate = "";
 
 //Declaration of arrays to be used in the text file interaction.
 $array_client_input = array(

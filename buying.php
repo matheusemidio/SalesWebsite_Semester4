@@ -6,7 +6,8 @@
 #Matheus Emidio (1931358) 2021-03-10 Inserted confirmation messages and variable to handle validation bug.
 #Matheus Emidio (1931358) 2021-03-13 Fixed bugs with the price validation
 #Matheus Emidio (1931358) 2021-04-30 Changed flow of page and calling a new function to generate form and create a new purchase
-
+#Matheus Emidio (1931358) 2021-05-02 This will only be visible if the user is logged in. It will have a combobox with the products on the database and after the customer fill the rest of the fields
+#                                    it will save the customer id of the user that is logged and create a new purchase on the database.
 //Getting access functions file
 define("FOLDER_PHP", "PHP/");
 define("FILE_PHP_FUNCTIONS",FOLDER_PHP. "PHP-functions.php");
@@ -104,7 +105,7 @@ generateHeader("Buying");
                 }
                 else
                 {
-                    echo '<br>Error<br>';
+                    //echo '<br>Error<br>';
 
                 }
 
@@ -113,7 +114,7 @@ generateHeader("Buying");
         }
         else
         {
-            echo "<br>You need to be logged in order to see the content of this page.";
+            echo "<br>You need to be logged in order to see the content of the buy page.";
         }
     //End of writing space
     

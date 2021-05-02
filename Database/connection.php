@@ -2,6 +2,8 @@
 #Revision History
 #Matheus Emidio (1931358) 2021-04-24 Created connection file
 #Matheus Emidio (1931358) 2021-04-26 Erased the alias names on database stored procedures 
+#Matheus Emidio (1931358) 2021-05-02 This file will create the connection with the database. During the project, the root user was used, since the privileges for the user are lost if any modification
+#                                    happens on the database, causing crashed on the code.
 
 //Reminder of how variables are being declared on PHP-variables
 //connection

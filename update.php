@@ -1,6 +1,8 @@
 <?php 
 #Revision History
 #Matheus Emidio (1931358) 2021-04-30 Create register page and worked on saving a customer
+#Matheus Emidio (1931358) 2021-05-02 This page will be called if the user is logged in and will generate the form with the fields already setted with the customer information (except the password).
+#                                    Here, the customer will be able to update his information.
 
 
 

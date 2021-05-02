@@ -1,6 +1,6 @@
 <?php
 #Revision History
-#Matheus Emidio (1931358) 2021-04-24 Created collection class
+#Matheus Emidio (1931358) 2021-04-24 Created collection class that will be inherited by the plural classes
 
 class collection
 {

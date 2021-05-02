@@ -15,6 +15,7 @@
 #                                    Added code to force redirect user to safe url
 #Matheus Emidio (1931358) 2021-04-30 Fixed register function and manage customer
 #                                    Worked on the buy form
+#Matheus Emidio (1931358) 2021-05-02 Added function to generate the search form and the delete button
 
 
 #Forcing user to be redirected to safe url
@@ -128,13 +129,13 @@ function generateHeader($title)
        //global $sessionUsername;
        //global $sessionPassword;
        global $LoginMessage;
-       $username = trim($_POST["username"]);
-       $password = trim(($_POST["password"]));
+       $username = trim(htmlspecialchars($_POST["username"]));
+       $password = trim(htmlspecialchars(($_POST["password"])));
        //$sessionUsername = trim($_POST["username"]);
        //$sessionPassword = trim($_POST["password"]);
        $customer = new customer();
        $LoginMessage = $customer->checkPassword($username, $password);
-       $LoginMessage = $customer->checkPassword($sessionUsername, $sessionPassword);
+       //$LoginMessage = $customer->checkPassword($sessionUsername, $sessionPassword);
        //$LoginMessage = "";
        
        if($LoginMessage == "")
@@ -165,7 +166,7 @@ function generateHeader($title)
     
     //----------------------------------------------------
     //Remember to change this to false
-    $debug = true;
+    $debug = false;
     function manageError($errorNumber, $errorMessage, $errorFile, $errorLine)
     {
         global $debug;
@@ -215,8 +216,8 @@ function generateHeader($title)
         die();
     }
     
-    //set_error_handler("manageError");
-    //set_exception_handler("manageException");
+    set_error_handler("manageError");
+    set_exception_handler("manageException");
     
     
     
@@ -235,6 +236,8 @@ function generateHeader($title)
     ?><!DOCTYPE html>
         <html>
             <head>
+                <script language = "javascript" type="text/javascript" src="<?php echo FILE_SEARCH; ?>">
+                </script>                
                 <meta charset="UTF-8">
                 <!-- Neccessary for responsive design -->
                 <meta name="viewport" content="width=device-width, initial-scale = 1.0"> 
@@ -271,6 +274,8 @@ function generateFooter()
 {
     //Goal:
     //Create this function to close what has been open before: the container for body content and the html structure.
+    //Update 
+    //The form login will be called on this page
     createFootContainer();
     global $currentPage;
 
@@ -294,7 +299,8 @@ function createNavigationMenu()
 {
     //Goal:
     //This function was created to display the structure for the navigation bar. It will be called in the header. Path to the php pages are dynamic
-    
+    //Update
+    //This function will now have the tab for account that will just be visible if the user is logged in
     global $username;
         ?>       
         <div class="navbar">
@@ -752,6 +758,8 @@ function createForm()
     
     function loginForm($title)
     {   
+        //Goal
+        //This function was created to display the login form if the user is not logged in and the logout form if the user is logged.
         global $username;
         global $password;
         global $errorUsername;
@@ -775,7 +783,7 @@ function createForm()
                             </span>                    
                             <br>
                             <label  for="password"> Password: </label>
-                            <input type="text" name="password" placeholder="password" value="<?php echo($errorGeneral == "")? "":$password; ?>"/>
+                            <input type="password" name="password" placeholder="password" value="<?php echo($errorGeneral == "")? "":$password; ?>"/>
                             <span class="errorMessage">
                                 <?php 
                                     echo $errorPassword;
@@ -828,6 +836,9 @@ function createForm()
     
     function register()
     {
+        //Goal
+        //This function was create to display the register form
+        
         global $firstname;
         global $lastname;
         global $address;
@@ -939,6 +950,8 @@ function createForm()
     
     function updateAccount()
     {
+        //Goal
+        //This function was created to display the update account form. The function will load the customer with the username passed and display its info on the text fields.
         global $firstname;
         global $lastname;
         global $address;
@@ -1059,6 +1072,10 @@ function createForm()
     }
     function buyForm()
     {
+        //Goal 
+        //This function was created to display the buy form. It will call the products constructor, loading every product. Then it will be displayed on the combobox the code, description and price
+        //but the value of the option chosed is the id of the product
+        
         global $product_code;
         global $comment;
         global $errorComment;
@@ -1122,3 +1139,40 @@ function createForm()
     }
     */
     
+    function generateSearch()
+    {
+        //Goal
+        //This function was created to display the search tab on the orders page with the button search that will call the search() function from the javascript file when clicked.
+        
+        global $errorGeneral;
+        global $date;
+        global $errorDate;
+           ?>
+                <div class="search">                   
+                
+                    <br>
+                <label for="date"> Show purchases made on this date or later: </label>
+                <input type="text" id = "year" name="year" placeholder="2021-03-13" value="<?php echo($errorGeneral == "")? "":$date; ?>"/>
+                <span class="errorMessage">
+                    <?php 
+                        echo $errorDate;
+                    ?>
+                </span>  
+                <br>               
+                <button class="button" onclick="search();" >Search </button>
+    
+                
+            <?php
+            ?>
+                </div>
+            <?php  
+    }
+    function createButtonDelete($purchaseId)
+    {
+        //Goal
+        //This function was created to display the button delete on the table. Every column will have its purchase id on its value and it will be passed to the javascript function.
+       
+          echo  "<td><button value='". $purchaseId ."' onclick='deletePurchase(this.value);'>Delete </button></td>";
+              
+       
+    }
