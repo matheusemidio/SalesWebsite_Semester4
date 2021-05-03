@@ -5,6 +5,9 @@
 #Matheus Emidio (1931358) 2021-05-02 This file will create the connection with the database. During the project, the root user was used, since the privileges for the user are lost if any modification
 #                                    happens on the database, causing crashed on the code.
 
+//Notes:
+//Please Sir, read the "README" file that I included on the project. Thank you!!
+
 //Reminder of how variables are being declared on PHP-variables
 //connection
 //define("DATABASE", "dbname=database-1931358");

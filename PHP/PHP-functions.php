@@ -119,7 +119,6 @@ function generateHeader($title)
     }
     
     //This is to make sure I dont send the header after the doctype
-    
     if(isset($_POST["login"]))
     {    
         //$_SESSION["user"] = "123";

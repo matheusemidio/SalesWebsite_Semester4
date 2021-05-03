@@ -7,6 +7,8 @@
 
 require_once FILE_CONNECTION;
 
+//All the customers have a password of: 123;
+
 class customer
 {
     //Attributes
