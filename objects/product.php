@@ -220,7 +220,7 @@ class product
     {
         //Function to insert one row on the database
         global $connection;
-        echo "Im on the products ->save()";
+        //echo "Im on the products ->save()";
 
 
         //if($this->customer_id == "")
@@ -244,7 +244,7 @@ class product
     {
         //Function to update one row from the database
         global $connection;
-        echo "Im on the products ->update()";
+        //echo "Im on the products ->update()";
 
         //else
         //{
@@ -276,7 +276,7 @@ class product
     {
         //Function to delete one row from the database
         global $connection;
-        echo "Im on the products ->delete()";
+        //echo "Im on the products ->delete()";
 
         //else
         //{

@@ -374,7 +374,7 @@ class purchase
     {
         //Function to update a row from the database
         global $connection;
-        echo "Im on the purchases ->update()";
+        //echo "Im on the purchases ->update()";
 
         //else
         //{
@@ -415,7 +415,7 @@ class purchase
     {
         //Function to delete one row from the database
         global $connection;
-        echo "Im on the purchases ->delete()";
+        //echo "Im on the purchases ->delete()";
 
         //else
         //{

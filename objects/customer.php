@@ -418,7 +418,7 @@ class customer
     {
         //Function to insert a row on the database
         global $connection;
-        echo "Im on the customers ->save()";
+        //echo "Im on the customers ->save()";
         
         
         //if($this->customer_id == "")
@@ -453,7 +453,7 @@ class customer
     {
         //Function to update one row from the database
         global $connection;
-        echo "Im on the customers ->update()";
+        //echo "Im on the customers ->update()";
 
         //else
         //{
@@ -498,7 +498,7 @@ class customer
     {
         //Function to delete one row from the database
         global $connection;
-        echo "Im on the customers ->delete()";
+        //echo "Im on the customers ->delete()";
 
         //else
         //{
